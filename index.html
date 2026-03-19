@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تهنئة خاصة لنونو</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg1: #071225;
+      --bg2: #111c44;
+      --bg3: #3c1b74;
+      --primary: #6ea8ff;
+      --secondary: #8d6bff;
+      --pink: #ff72c8;
+      --white: #ffffff;
+      --soft: rgba(255,255,255,0.08);
+      --soft-border: rgba(255,255,255,0.12);
+      --text-dim: rgba(255,255,255,0.82);
+    }
+
+    body {
+      font-family: "Tahoma", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 114, 200, 0.12), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(110, 168, 255, 0.12), transparent 35%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      color: var(--white);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 8px rgba(255,255,255,0.35);
+      animation: twinkleMove linear infinite;
+    }
+
+    @keyframes twinkleMove {
+      0% {
+        transform: translateY(0px) scale(0.8);
+        opacity: 0.25;
+      }
+      25% {
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-10px) scale(1.15);
+        opacity: 0.6;
+      }
+      75% {
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(0px) scale(0.8);
+        opacity: 0.25;
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .page {
+      width: min(92vw, 760px);
+      min-height: 530px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--soft-border);
+      backdrop-filter: blur(15px);
+      border-radius: 30px;
+      padding: 36px 22px;
+      box-shadow:
+        0 0 40px rgba(141, 107, 255, 0.18),
+        0 20px 50px rgba(0,0,0,0.28);
+      opacity: 0;
+      transform: translateX(60px) scale(0.98);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      position: absolute;
+      visibility: hidden;
+    }
+
+    .page.active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      visibility: visible;
+      position: relative;
+    }
+
+    .shake {
+      animation: shake 0.32s ease;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 18px;
+      box-shadow: 0 0 18px rgba(255,255,255,0.05);
+    }
+
+    .icon {
+      font-size: 54px;
+      margin-bottom: 14px;
+      filter: drop-shadow(0 0 20px rgba(255, 114, 200, 0.25));
+      animation: floatSoft 3.2s ease-in-out infinite;
+    }
+
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      font-size: clamp(34px, 7vw, 64px);
+      line-height: 1.15;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, #ffffff, #9ac0ff, #ff8dd8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 24px rgba(255,255,255,0.06);
+      background-size: 200% auto;
+      animation: titleGlow 5s linear infinite;
+    }
+
+    h2 {
+      font-size: clamp(24px, 5vw, 42px);
+      margin-bottom: 12px;
+      color: #f7f8ff;
+      animation: floatSoft 4s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    p {
+      font-size: clamp(16px, 2.8vw, 21px);
+      color: var(--text-dim);
+      line-height: 1.9;
+      max-width: 92%;
+      margin-bottom: 24px;
+    }
+
+    .name {
+      color: var(--pink);
+      font-weight: bold;
+      text-shadow: 0 0 20px rgba(255, 114, 200, 0.28);
+    }
+
+    .subname {
+      color: #9ac0ff;
+      font-weight: bold;
+      text-shadow: 0 0 16px rgba(110, 168, 255, 0.35);
+    }
+
+    .btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: bold;
+      color: white;
+      transition: 0.25s ease;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--pink));
+      box-shadow:
+        0 10px 25px rgba(141, 107, 255, 0.34),
+        0 0 20px rgba(255, 114, 200, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -120%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      right: 120%;
+    }
+
+    button:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow:
+        0 16px 30px rgba(141, 107, 255, 0.42),
+        0 0 28px rgba(255, 114, 200, 0.25);
+    }
+
+    button.secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: none;
+    }
+
+    .arrow {
+      font-size: 22px;
+      margin-right: 6px;
+    }
+
+    .message-box {
+      width: 100%;
+      max-width: 580px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 18px;
+      margin-top: 10px;
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.02);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 620px;
+      margin: 10px 0 24px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.22);
+      transition: 0.28s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.04) translateY(-4px);
+    }
+
+    .audio-card {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 22px 18px;
+      margin-top: 14px;
+    }
+
+    .audio-note {
+      font-size: 15px;
+      color: rgba(255,255,255,0.74);
+      margin-top: 12px;
+      line-height: 1.8;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 14px;
+      border-radius: 12px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      transition: 0.3s;
+    }
+
+    .dot.active {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      box-shadow: 0 0 12px rgba(255, 114, 200, 0.45);
+      transform: scale(1.15);
+    }
+
+    .confetti {
+      position: fixed;
+      top: -14px;
+      width: 10px;
+      height: 18px;
+      opacity: 0.95;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0.85;
+      }
+    }
+
+    .typewriter {
+      min-height: 72px;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        min-height: 82vh;
+        padding: 28px 16px;
+      }
+
+      .gallery img {
+        height: 180px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .btns {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+    <section class="page active" id="page1">
+      <div class="badge">رسالة خاصة إلى نونو</div>
+      <div class="icon">💌</div>
+      <h1>هذي المفاجأة إلج يا نونو</h1>
+      <p class="typewriter" data-text="سويت هالموقع حتى أوصل لج شي حلو ومرتب من كلبي، هسه دوسي هذا الزر.↓"></p>
+      <div class="btns">
+        <button onclick="goToPage(2, this, true)">افتحي التهنئة <span class="arrow">←</span></button>
+      </div>
+      <div class="dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <section class="page" id="page2">
+      <div class="icon">🌙</div>
+      <h1>عيدج مبارك يا <span class="name">قزومه</span></h1>
+      <p class="typewriter" data-text="كل عام وإنتِ بخير وفرح وسعادة، وإن شاء الله تبقين أجمل صدفة وأحلى بنيه بالدنيا كلها."></p>
+      <div class="btns">
+  <button class="secondary" onclick="goBack(1)"> رجوع →</button>
+  <button onclick="goToPage(3, this, true)">الرسالة اللي بعدها ←</button>
+</div>
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <section class="page" id="page3">
+      <div class="icon">✨</div>
+      <h2>عود كلمة من اعماق كلبي وهاي <span class="subname"></span></h2>
+      <div class="message-box">
+        <p class="typewriter" data-text=" نمنم، أتمنى لج أيام كلها ضحكة وراحة، وإن شاء الله كل عيد وانتي أقرب لكلبي وأكثر وحدة تفرحيني والقران يعني صدك الي يحجي وياج يرتاح و اي بعد مادري شكتب هيه المهم. "></p>
+      </div>
+<div class="btns">
+  <button class="secondary" onclick="goBack(2)"> رجوع →</button>
+  <button onclick="goToPage(4, this, true)">شوفي الصور <span class="arrow">←</span></button>
+</div>
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <section class="page" id="page4">
+      <div class="icon">📸</div>
+      <h2>هاي ستكراتج مادري ليش خليتهه
+</h2>
+      <p class="typewriter" data-text=></p>
+
+      <div class="gallery">
+        <img src="photo1.jpg" alt="الصورة الأولى">
+        <img src="photo2.jpg" alt="الصورة الثانية">
+        <img src="photo3.jpg" alt="الصورة الثالثة">
+      </div>
+
+      <div class="btns">
+  <button class="secondary" onclick="goBack(3)"> رجوع →</button>
+  <button onclick="goToPage(5, this, true)">آخر مفاجأة <span class="arrow">←</span></button>
+</div>
+
+<div class="dots">
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot active"></span>
+  <span class="dot"></span>
+</div>
+</section>
+
+<section class="page" id="page5">
+  <div class="badge">أغنية خاصة إلى نونو</div>
+  <div class="icon">🎵</div>
+
+  <h2>هاي الأغنية من <span class="subname">عمار القيسييي</span> إلى <span class="name">نمنمم</span></h2>
+
+  <p>هاي الأغنية اتوقع تحبيهه </p>
+
+  <div class="audio-card">
+
+    <audio id="song" controls>
+      <source src="song.mp3" type="audio/mpeg">
+      متصفحك ما يدعم تشغيل الصوت.
+    </audio>
+
+    <div class="btns" style="margin-top:16px;">
+      <button class="secondary" onclick="goBack(4)">⬅️ رجوع</button>
+      <button onclick="playSong()">تشغيل الأغنية</button>
+      <button class="secondary" onclick="pauseSong()">إيقاف الأغنية</button>
+    </div>
+
+    <div class="audio-note">
+    </div>
+
+  <div class="dots">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot active"></span>
+  </div>
+</section>
+  <script>
+function goToPage(pageNumber, btn = null, party = false) {
+  if (btn) {
+    btn.classList.remove("shake");
+    void btn.offsetWidth;
+    btn.classList.add("shake");
+  }
+
+  if (party) createConfetti();
+
+  const currentPage = document.querySelector(".page.active");
+  if (currentPage) {
+    currentPage.classList.remove("active");
+  }
+
+  setTimeout(() => {
+    const nextPage = document.getElementById("page" + pageNumber);
+    nextPage.classList.add("active");
+    runTypewriters(nextPage);
+  }, 220);
+}
+
+function goBack(pageNumber) {
+  const currentPage = document.querySelector(".page.active");
+  if (currentPage) {
+    currentPage.classList.remove("active");
+  }
+
+  setTimeout(() => {
+    const prevPage = document.getElementById("page" + pageNumber);
+    prevPage.classList.add("active");
+    runTypewriters(prevPage);
+  }, 220);
+}
+
+function createConfetti() {
+  const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
+
+  for (let i = 0; i < 70; i++) {
+    const piece = document.createElement("div");
+    piece.classList.add("confetti");
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+    piece.style.width = (7 + Math.random() * 7) + "px";
+    piece.style.height = (10 + Math.random() * 12) + "px";
+    piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+    document.body.appendChild(piece);
+
+    setTimeout(() => {
+      piece.remove();
+    }, 5000);
+  }
+}
+
+function playSong() {
+  document.getElementById("song").play();
+}
+
+function pauseSong() {
+  document.getElementById("song").pause();
+}
+
+const song = document.getElementById("song");
+song.addEventListener("loadedmetadata", () => {
+  song.currentTime = 218;
+});
+
+function createStars() {
+  const starsContainer = document.getElementById("stars");
+  const count = 65;
+
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement("span");
+    star.classList.add("star");
+    const size = Math.random() * 3 + 1;
+    star.style.width = size + "px";
+    star.style.height = size + "px";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.animationDuration = (4 + Math.random() * 5) + "s";
+    star.style.animationDelay = Math.random() * 4 + "s";
+    starsContainer.appendChild(star);
+  }
+}
+
+function typeWriter(element, text, speed = 35) {
+  element.textContent = "";
+  let i = 0;
+
+  function write() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(write, speed);
+    }
+  }
+
+  write();
+}
+
+function runTypewriters(scope = document) {
+  const items = scope.querySelectorAll(".typewriter");
+  items.forEach((el) => {
+    const text = el.getAttribute("data-text");
+    typeWriter(el, text, 28);
+  });
+}
+
+createStars();
+runTypewriters(document.getElementById("page1"));
+</script>
