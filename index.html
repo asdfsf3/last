@@ -30,19 +30,6 @@
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* هنا غيرت: اهتزاز خفيف */
-@keyframes levelShake {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-3px,2px); }
-  50% { transform: translate(3px,-2px); }
-  75% { transform: translate(-2px,1px); }
-  100% { transform: translate(0,0); }
-}
-
-.shake-screen {
-  animation: levelShake 0.3s ease;
-}
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -488,15 +475,14 @@
     }
 
     .game-info {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-      font-size: 16px;
-      color: rgba(255,255,255,0.88);
-    }
-
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: rgba(255,255,255,0.88);
+}
     .game-badge {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.1);
@@ -663,8 +649,58 @@
         width: auto;
       }
     }
+
+    .level-bar-wrap {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto 14px;
+  text-align: left;
+}
+
+.level-bar-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
+}
+
+.level-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.level-bar-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--pink));
+  box-shadow: 0 0 14px rgba(255, 114, 200, 0.28);
+  transition: width 0.25s ease;
+}
+
   </style>
 </head>
+
+<!-- هنا غيرت: بار اللفل -->
+<div class="level-bar-wrap">
+  <div class="level-bar-top">
+    <span>Level <span id="levelText">1</span></span>
+    <span>
+      <span id="levelProgressText">0</span> /
+      <span id="levelTargetText">25</span>
+    </span>
+  </div>
+
+  <div class="level-bar">
+    <div class="level-bar-fill" id="levelBarFill"></div>
+  </div>
+</div>
 
 <!-- هنا غيرت: عنصر LEVEL UP -->
 <div id="levelUpText" class="level-up">LEVEL UP 🔥</div>
@@ -833,18 +869,49 @@
   </div>
 
   <script>
+    function getLevelInfo(currentScore) {
+  if (currentScore < 25) {
+    return {
+      level: 1,
+      start: 0,
+      target: 25,
+      progress: currentScore
+    };
+  }
+
+  const extra = currentScore - 25;
+  const extraLevels = Math.floor(extra / 50);
+  const level = 2 + extraLevels;
+  const start = 25 + (extraLevels * 50);
+  const target = start + 50;
+  const progress = currentScore - start;
+
+  return { level, start, target, progress };
+}
+
+function updateLevelUI() {
+  const info = getLevelInfo(score);
+  level = info.level;
+
+  const needed = info.target - info.start;
+  const done = Math.max(0, Math.min(needed, info.progress));
+  const percent = (done / needed) * 100;
+
+  levelTextEl.textContent = info.level;
+  levelProgressTextEl.textContent = done;
+  levelTargetTextEl.textContent = needed;
+  levelBarFillEl.style.width = percent + "%";
+}
+
     let level = 1;
 
     function showLevelUp() {
   const el = document.getElementById("levelUpText");
-
+  el.textContent = `LEVEL ${level} 🔥`;
   el.classList.add("show");
-
-  document.body.classList.add("shake-screen");
 
   setTimeout(() => {
     el.classList.remove("show");
-    document.body.classList.remove("shake-screen");
   }, 900);
 }
 
@@ -964,6 +1031,10 @@
     const bestScoreEl = document.getElementById("bestScore");
     const finalScoreEl = document.getElementById("finalScore");
     const gameOverBox = document.getElementById("gameOverBox");
+    const levelTextEl = document.getElementById("levelText");
+    const levelProgressTextEl = document.getElementById("levelProgressText");
+    const levelTargetTextEl = document.getElementById("levelTargetText");
+    const levelBarFillEl = document.getElementById("levelBarFill");
 
     let duckGameLoop = null;
     let spawnLoop = null;
@@ -1035,13 +1106,13 @@
       ? forcedX
       : Math.random() * (maxX - minX) + minX;
 
-    const speed =
-      itemType === "bomb" ? (1.8 + Math.random() * 0.7) * difficulty :
-      itemType === "heart" ? (1.5 + Math.random() * 0.5) * difficulty :
-      (1.9 + Math.random() * 0.8) * difficulty;
-
-    el.style.left = x + "px";
-    el.style.top = "-40px";
+    // هنا غيرت: ترتيب السرعات بشكل متوازن
+const speed =
+  type === "bomb" 
+    ? (1.1 + Math.random() * 0.3) * difficulty
+    : type === "heart" 
+    ? (1.4 + Math.random() * 0.4) * difficulty
+    : (2.0 + Math.random() * 0.8) * difficulty;
 
     duckGame.appendChild(el);
 
@@ -1111,14 +1182,14 @@ function updateGame() {
       items.splice(i, 1);
 
       if (item.type === "bread") {
+  const oldLevel = getLevelInfo(score).level;
+
   score++;
   scoreEl.textContent = score;
+  updateLevelUI();
 
-  /* هنا غيرت: نظام اللفل */
-  const newLevel = Math.floor(score / 10) + 1;
-
-  if (newLevel > level) {
-    level = newLevel;
+  const newLevel = getLevelInfo(score).level;
+  if (newLevel > oldLevel) {
     showLevelUp();
   }
 }
@@ -1157,10 +1228,11 @@ function updateGame() {
 
  function startDuckGame() {
   stopDuckGame(false);
-  level = 1;
+
   score = 0;
   misses = 0;
   difficulty = 1;
+  level = 1;
   gameRunning = true;
   scoreEl.textContent = "0";
   missesEl.textContent = "0";
@@ -1169,6 +1241,7 @@ function updateGame() {
   clearFallingItems();
   resetDuckPosition();
   updateBestScore();
+  updateLevelUI();
 
   spawnLoop = setInterval(spawnItem, 850);
   duckGameLoop = requestAnimationFrame(updateGame);
