@@ -752,18 +752,18 @@
 
       <div class="icon">🦆</div>
       <h2>لعبة البطّة</h2>
-      <p>التقط الخبز قبل لا يطيح. إذا ضاع 3 مرات تنتهي اللعبة 😏</p>
+      <p>التقط الخبز قبل لا يوكع. إذا ضاع 3 مرات تنتهي اللعبة 😏</p>
 
       <div class="game-note">
         <span class="game-note-item"><strong>🥖 الخبزة:</strong> تزيد نقطة +1</span>
-        <span class="game-note-item"><strong>❤️ القلب:</strong> ينقص الفاقد 1</span>
-        <span class="game-note-item"><strong>💣 القنبلة:</strong> إذا تاخذها تنتهي اللعبة فوراً</span>
+        <span class="game-note-item"><strong>❤️ القلب:</strong> ينقص الواكع 1</span>
+        <span class="game-note-item"><strong>💣 القنبلة:</strong> إذا تاخذها تنتهي اللعبة كبل</span>
       </div>
 
       <div class="game-card">
         <div class="game-info">
           <div class="game-badge">النقاط: <span id="score">0</span></div>
-          <div class="game-badge">الفاقد: <span id="misses">0</span> / 3</div>
+          <div class="game-badge">الواكع: <span id="misses">0</span> / 3</div>
           <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
         </div>
 
@@ -772,16 +772,14 @@
           <div class="duck-ground"></div>
 
           <div class="game-over-box" id="gameOverBox">
-            <h3>خلصت اللعبة 🥲</h3>
+            <h3>خسرت  🥲</h3>
             <p>نتيجتك: <span id="finalScore">0</span></p>
             <button onclick="startDuckGame()">إعادة اللعب</button>
           </div>
         </div>
 
         <div class="mobile-hint">
-          على التلفون: المس داخل مساحة اللعبة حتى تتحرك البطّة. <br>
-          على الكمبيوتر: استخدم الأسهم يمين ويسار.
-        </div>
+          <br>
 
         <div class="btns" style="margin-top:16px;">
           <button onclick="startDuckGame()">ابدأ اللعبة</button>
@@ -966,9 +964,9 @@
       const x = Math.random() * (maxX - minX) + minX;
 
       const speed =
-        type === "bomb" ? (1.4 + Math.random() * 0.5) :
-        type === "heart" ? (1.3 + Math.random() * 0.4) :
-        (1.4 + Math.random() * 0.6);
+        type === "bomb" ? (1.8 + Math.random() * 0.8) :
+        type === "heart" ? (1.6 + Math.random() * 0.7) :
+        (1.7 + Math.random() * 0.6);
 
       el.style.left = x + "px";
       el.style.top = "-40px";
@@ -1072,7 +1070,8 @@
       resetDuckPosition();
       updateBestScore();
 
-      spawnLoop = setInterval(spawnItem, 1100);
+      spawnLoop = setInterval(spawnItem, 950
+      );
       duckGameLoop = requestAnimationFrame(updateGame);
     }
 
