@@ -383,40 +383,43 @@
       transform: translateY(-2px) scale(1.03);
     }
 
-    /* هنا غيرت: نافذة اللعبة */
-    .game-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(3, 10, 20, 0.62);
-      backdrop-filter: blur(10px);
-    }
+    /* هنا غيرت: نافذة اللعبة صار بيها سكرول */
+.game-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(3, 10, 20, 0.62);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 
-    .game-modal.show {
-      display: flex;
-    }
+.game-modal.show {
+  display: flex;
+}
 
-    .game-panel {
-      width: min(94vw, 720px);
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 30px;
-      padding: 22px 18px;
-      box-shadow:
-        0 0 40px rgba(141, 107, 255, 0.18),
-        0 20px 50px rgba(0,0,0,0.28);
-      text-align: center;
-      position: relative;
-    }
-
-    .game-panel .icon {
-      margin-bottom: 8px;
-    }
-
+.game-panel {
+  width: min(94vw, 720px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
+  padding: 22px 18px;
+  box-shadow:
+    0 0 40px rgba(141, 107, 255, 0.18),
+    0 20px 50px rgba(0,0,0,0.28);
+  text-align: center;
+  position: relative;
+  margin: 24px 0;
+  -webkit-overflow-scrolling: touch;
+}
     .game-topbar {
       display: flex;
       justify-content: space-between;
@@ -504,15 +507,14 @@
     }
 
     .falling-item {
-      position: absolute;
-      top: -40px;
-      font-size: 34px;
-      user-select: none;
-      pointer-events: none;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
-      z-index: 2;
-    }
-
+  position: absolute;
+  top: -40px;
+  font-size: 36px;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.22));
+  z-index: 3;
+}
     .game-over-box {
       position: absolute;
       inset: 0;
@@ -550,53 +552,54 @@
       line-height: 1.8;
     }
 
-    @media (max-width: 600px) {
-      .page {
-        min-height: 82vh;
-        padding: 28px 16px;
-      }
+   @media (max-width: 600px) {
+  .page {
+    min-height: 82vh;
+    padding: 28px 16px;
+  }
 
-      button {
-        width: 100%;
-      }
+  button {
+    width: 100%;
+  }
 
-      .gallery img {
-        border-radius: 18px;
-      }
+  .gallery img {
+    border-radius: 18px;
+  }
 
-      .duck-game {
-        height: 420px;
-      }
+  .duck-game {
+    height: 420px;
+  }
 
-      .duck {
-        font-size: 46px;
-      }
+  .duck {
+    font-size: 46px;
+  }
 
-      .falling-item {
-        font-size: 30px;
-      }
+  .falling-item {
+    font-size: 30px;
+  }
 
-      .game-fab {
-        top: 14px;
-        left: 14px;
-        font-size: 14px;
-        padding: 10px 14px;
-        width: auto;
-      }
+  .game-fab {
+    top: 14px;
+    left: 14px;
+    font-size: 14px;
+    padding: 10px 14px;
+    width: auto;
+  }
 
-      .game-modal {
-        padding: 12px;
-      }
+  .game-modal {
+    padding: 12px;
+  }
 
-      .game-panel {
-        margin: 12px 0 24px;
-        padding: 18px 14px;
-      }
-      .game-close {
-        width: auto;
-      }
+  .game-panel {
+  margin: 12px 0 24px;
+  padding: 18px 14px;
+  max-height: calc(100vh - 24px);
+}
 
-     }
+  .game-close {
+    width: auto;
+  }
+}
     /* هنا غيرت: صندوق شرح اللعبة */
 .game-note {
   width: 100%;
@@ -941,105 +944,122 @@
       items = [];
     }
 
-        /* هنا غيرت: نزول أبطأ + إضافة قلوب وقنابل */
-    function spawnItem() {
-      if (!gameRunning) return;
+    /* هنا غيرت: نزول أبطأ + إضافة قلوب وقنابل */
+function spawnItem() {
+  if (!gameRunning) return;
 
-      const rand = Math.random();
-      let type = "bread";
-      let symbol = "🥖";
+  const rand = Math.random();
+  let type = "bread";
+  let symbol = "🥖";
 
-      if (rand < 0.15) {
-        type = "bomb";
-        symbol = "💣";
-      } else if (rand < 0.30) {
-        type = "heart";
-        symbol = "❤️";
+  if (rand < 0.15) {
+    type = "bomb";
+    symbol = "💣";
+  } else if (rand < 0.30) {
+    type = "heart";
+    symbol = "❤️";
+  }
+
+  const el = document.createElement("div");
+  el.className = "falling-item";
+  el.textContent = symbol;
+
+  const minX = 20;
+  const maxX = duckGame.clientWidth - 50;
+  const x = Math.random() * (maxX - minX) + minX;
+
+  const speed =
+    type === "bomb" ? (1.4 + Math.random() * 0.5) :
+    type === "heart" ? (1.3 + Math.random() * 0.4) :
+    (1.4 + Math.random() * 0.6);
+
+  el.style.left = x + "px";
+  el.style.top = "-40px";
+
+  duckGame.appendChild(el);
+
+  items.push({
+    el,
+    type,
+    x,
+    y: -40,
+    speed,
+    width: 34,
+    height: 34
+  });
+}
+
+   function updateGame() {
+  if (!gameRunning) return;
+
+  const gameWidth = duckGame.clientWidth;
+  const duckY = duckGame.clientHeight - 74 - 52;
+
+  if (moveLeft) duckX -= 6;
+  if (moveRight) duckX += 6;
+
+  if (duckX < 26) duckX = 26;
+  if (duckX > gameWidth - 26) duckX = gameWidth - 26;
+
+  duck.style.left = duckX + "px";
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+    item.y += item.speed;
+    item.el.style.top = item.y + "px";
+
+    const itemCenterX = item.x + item.width / 2;
+    const itemBottomY = item.y + item.height;
+
+    const duckLeft = duckX - 28;
+    const duckRight = duckX + 28;
+    const duckTop = duckY;
+    const duckBottom = duckY + 52;
+
+    const caught =
+      itemCenterX > duckLeft &&
+      itemCenterX < duckRight &&
+      itemBottomY > duckTop &&
+      item.y < duckBottom;
+
+    if (caught) {
+      item.el.remove();
+      items.splice(i, 1);
+
+      if (item.type === "bread") {
+        score++;
+        scoreEl.textContent = score;
+      } else if (item.type === "heart") {
+        if (misses > 0) {
+          misses--;
+          missesEl.textContent = misses;
+        }
+      } else if (item.type === "bomb") {
+        endDuckGame();
+        return;
       }
 
-      const el = document.createElement("div");
-      el.className = "falling-item";
-      el.textContent = symbol;
-
-      const minX = 20;
-      const maxX = duckGame.clientWidth - 50;
-      const x = Math.random() * (maxX - minX) + minX;
-
-      /* أبطأ من قبل */
-      const speed =
-        type === "bomb" ? (1.8 + Math.random() * 0.8) :
-        type === "heart" ? (1.6 + Math.random() * 0.7) :
-        (1.7 + Math.random() * 0.9);
-
-      el.style.left = x + "px";
-      el.style.top = "-40px";
-
-      duckGame.appendChild(el);
-
-      items.push({
-        el,
-        type,
-        x,
-        y: -40,
-        speed,
-        width: 34,
-        height: 34
-      });
+      continue;
     }
 
-    function updateGame() {
-      if (!gameRunning) return;
+    if (item.y > duckGame.clientHeight - 80) {
+      item.el.remove();
+      items.splice(i, 1);
 
-      const gameWidth = duckGame.clientWidth;
-      const duckWidth = 52;
-      const duckY = duckGame.clientHeight - 74 - 52;
+      if (item.type === "bread") {
+        misses++;
+        missesEl.textContent = misses;
 
-      if (moveLeft) duckX -= 6;
-      if (moveRight) duckX += 6;
-
-      if (duckX < 26) duckX = 26;
-      if (duckX > gameWidth - 26) duckX = gameWidth - 26;
-
-      duck.style.left = duckX + "px";
-
-      for (let i = items.length - 1; i >= 0; i--) {
-        const item = items[i];
-        item.y += item.speed;
-        item.el.style.top = item.y + "px";
-
-        const itemCenterX = item.x + item.width / 2;
-        const itemBottomY = item.y + item.height;
-
-        const duckLeft = duckX - 28;
-        const duckRight = duckX + 28;
-        const duckTop = duckY;
-        const duckBottom = duckY + 52;
-
-        const caught =
-          itemCenterX > duckLeft &&
-          itemCenterX < duckRight &&
-          itemBottomY > duckTop &&
-          item.y < duckBottom;
-
-               if (caught) {
-          item.el.remove();
-          items.splice(i, 1);
-
-          if (item.type === "bread") {
-            score++;
-            scoreEl.textContent = score;
-          } else if (item.type === "heart") {
-            if (misses > 0) {
-              misses--;
-              missesEl.textContent = misses;
-            }
-          } else if (item.type === "bomb") {
-            endDuckGame();
-            return;
-          }
-
-          continue;
+        if (misses >= 3) {
+          endDuckGame();
+          return;
         }
+      }
+    }
+  }
+
+  duckGameLoop = requestAnimationFrame(updateGame);
+}
 
         if (item.y > duckGame.clientHeight - 80) {
           item.el.remove();
@@ -1052,10 +1072,10 @@
             return;
           }
         }
-      }
+      
 
       duckGameLoop = requestAnimationFrame(updateGame);
-    }
+    
 
     function startDuckGame() {
       stopDuckGame(false);
@@ -1071,7 +1091,7 @@
       resetDuckPosition();
       updateBestScore();
 
-      spawnLoop = setInterval(spawnItem, 950);
+      spawnLoop = setInterval(spawnItem, 1100);
       duckGameLoop = requestAnimationFrame(updateGame);
     }
 
@@ -1098,14 +1118,20 @@
       }
     }
 
-    function openGameModal() {
-      gameModal.classList.add("show");
-      updateBestScore();
-      setTimeout(() => {
-        resetDuckPosition();
-      }, 50);
-    }
+    /* هنا غيرت: فتح النافذة مع تصفير السكرول */
+function openGameModal() {
+  gameModal.classList.add("show");
+  gameModal.scrollTop = 0;
 
+  const panel = gameModal.querySelector(".game-panel");
+  if (panel) panel.scrollTop = 0;
+
+  updateBestScore();
+
+  setTimeout(() => {
+    resetDuckPosition();
+  }, 50);
+}
     function closeGameModal() {
       gameModal.classList.remove("show");
       stopDuckGame();
