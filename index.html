@@ -6,30 +6,6 @@
   <title>تهنئة خاصة لنونو</title>
 
   <style>
-    /* هنا غيرت: نص LEVEL UP */
-.level-up {
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  font-size: 42px;
-  font-weight: bold;
-  color: white;
-  z-index: 20000;
-  opacity: 0;
-  pointer-events: none;
-  text-shadow:
-    0 0 10px #fff,
-    0 0 20px #8d6bff,
-    0 0 40px #ff72c8;
-  transition: 0.3s ease;
-}
-
-.level-up.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -47,6 +23,7 @@
       --soft-border: rgba(255,255,255,0.12);
       --text-dim: rgba(255,255,255,0.82);
     }
+
     body {
       font-family: "Tahoma", Arial, sans-serif;
       background:
@@ -405,67 +382,9 @@
       transform: translateY(-2px) scale(1.03);
     }
 
-    .game-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: none;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(3, 10, 20, 0.62);
-      backdrop-filter: blur(10px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .game-modal.show {
-      display: flex;
-    }
-
-    .game-panel {
-      width: min(94vw, 720px);
-      max-height: calc(100vh - 32px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 30px;
-      padding: 22px 18px;
-      box-shadow:
-        0 0 40px rgba(141, 107, 255, 0.18),
-        0 20px 50px rgba(0,0,0,0.28);
-      text-align: center;
-      position: relative;
-      margin: 24px 0;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .game-topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .game-topbar .badge {
-      margin-bottom: 0;
-    }
-
-    .game-close {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: none;
-      padding: 10px 16px;
-      font-size: 15px;
-    }
-
     .game-card {
       width: 100%;
-      max-width: 620px;
+      max-width: 700px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 24px;
@@ -475,14 +394,15 @@
     }
 
     .game-info {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-  font-size: 16px;
-  color: rgba(255,255,255,0.88);
-}
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.88);
+    }
+
     .game-badge {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.1);
@@ -490,11 +410,34 @@
       border-radius: 999px;
     }
 
+    .game-note {
+      width: 100%;
+      max-width: 700px;
+      margin: 12px auto 0;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px;
+      text-align: right;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.9;
+      font-size: 15px;
+    }
+
+    .game-note strong {
+      color: #fff;
+    }
+
+    .game-note-item {
+      display: block;
+      margin-bottom: 6px;
+    }
+
     .duck-game {
       position: relative;
       width: 100%;
-      max-width: 560px;
-      height: 460px;
+      max-width: 680px;
+      height: 500px;
       margin: 0 auto;
       border-radius: 22px;
       overflow: hidden;
@@ -574,33 +517,68 @@
       line-height: 1.8;
     }
 
-    .game-note {
+    .level-up {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      font-size: 42px;
+      font-weight: bold;
+      color: white;
+      z-index: 20000;
+      opacity: 0;
+      pointer-events: none;
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #8d6bff,
+        0 0 40px #ff72c8;
+      transition: 0.3s ease;
+    }
+
+    .level-up.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .level-bar-wrap {
       width: 100%;
-      max-width: 620px;
-      margin: 12px auto 0;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 14px;
-      text-align: right;
+      max-width: 680px;
+      margin: 0 auto 14px;
+      text-align: left;
+    }
+
+    .level-bar-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 14px;
       color: rgba(255,255,255,0.9);
-      line-height: 1.9;
-      font-size: 15px;
+      margin-bottom: 8px;
     }
 
-    .game-note strong {
-      color: #fff;
+    .level-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .game-note-item {
-      display: block;
-      margin-bottom: 6px;
+    .level-bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--pink));
+      box-shadow: 0 0 14px rgba(255, 114, 200, 0.28);
+      transition: width 0.25s ease;
     }
 
     @media (max-width: 600px) {
       .page {
-        min-height: 82vh;
-        padding: 28px 16px;
+        width: 96vw;
+        min-height: 84vh;
+        padding: 26px 12px;
       }
 
       button {
@@ -611,12 +589,11 @@
         border-radius: 18px;
       }
 
-     .duck-game {
-  width: 100%;
-  max-width: none;
-  height: 420px;
-}
-
+      .duck-game {
+        width: 100%;
+        max-width: none;
+        height: 440px;
+      }
 
       .duck {
         font-size: 46px;
@@ -626,90 +603,31 @@
         font-size: 30px;
       }
 
-     .game-fab {
-  top: 12px;
-  left: 12px;
-  font-size: 14px;
-  padding: 11px 15px;
-  width: auto;
-}
-      .game-modal {
-        padding: 12px;
-      }
-
-     .game-panel {
-  width: 99vw;
-  margin: 6px 0 16px;
-  padding: 18px 10px;
-  max-height: calc(100vh - 12px);
-  border-radius: 22px;
-}
-
-      .game-close {
+      .game-fab {
+        top: 12px;
+        left: 12px;
+        font-size: 14px;
+        padding: 11px 15px;
         width: auto;
       }
+
+      .game-card {
+        padding: 14px 10px;
+      }
+
+      .level-bar-wrap,
+      .game-note {
+        max-width: 100%;
+      }
     }
-
-    .level-bar-wrap {
-  width: 100%;
-  max-width: 620px;
-  margin: 0 auto 14px;
-  text-align: left;
-}
-
-.level-bar-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 14px;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 8px;
-}
-
-.level-bar {
-  width: 100%;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.12);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.level-bar-fill {
-  width: 0%;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--pink));
-  box-shadow: 0 0 14px rgba(255, 114, 200, 0.28);
-  transition: width 0.25s ease;
-}
-
   </style>
 </head>
-
-<!-- هنا غيرت: بار اللفل -->
-<div class="level-bar-wrap">
-  <div class="level-bar-top">
-    <span>Level <span id="levelText">1</span></span>
-    <span>
-      <span id="levelProgressText">0</span> /
-      <span id="levelTargetText">25</span>
-    </span>
-  </div>
-
-  <div class="level-bar">
-    <div class="level-bar-fill" id="levelBarFill"></div>
-  </div>
-</div>
-
-<!-- هنا غيرت: عنصر LEVEL UP -->
-<div id="levelUpText" class="level-up">LEVEL UP 🔥</div>
-
 <body>
 
   <div class="stars" id="stars"></div>
+  <div id="levelUpText" class="level-up">LEVEL UP 🔥</div>
 
-  <button class="game-fab" onclick="openGameModal()">🦆 لعبة البطّة</button>
+  <button class="game-fab" onclick="goToPage(6, this, false)">🦆 لعبة البطّة</button>
 
   <div class="container">
 
@@ -723,6 +641,7 @@
       </div>
       <div class="dots">
         <span class="dot active"></span>
+        <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
@@ -744,6 +663,7 @@
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
+        <span class="dot"></span>
       </div>
     </section>
 
@@ -761,6 +681,7 @@
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot active"></span>
+        <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
       </div>
@@ -787,6 +708,7 @@
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot active"></span>
+        <span class="dot"></span>
         <span class="dot"></span>
       </div>
     </section>
@@ -818,17 +740,12 @@
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot active"></span>
+        <span class="dot"></span>
       </div>
     </section>
 
-  </div>
-  <div class="game-modal" id="gameModal">
-    <div class="game-panel">
-      <div class="game-topbar">
-        <div class="badge">Duck Catch</div>
-        <button class="game-close" onclick="closeGameModal()">إغلاق ✕</button>
-      </div>
-
+    <section class="page" id="page6">
+      <div class="badge">Duck Catch</div>
       <div class="icon">🦆</div>
       <h2>لعبة البطّة</h2>
       <p>التقط الخبز قبل لا يوكع. إذا ضاع 3 مرات تنتهي اللعبة 😏</p>
@@ -836,7 +753,7 @@
       <div class="game-note">
         <span class="game-note-item"><strong>🥖 الخبزة:</strong> تزيد نقطة +1</span>
         <span class="game-note-item"><strong>❤️ القلب:</strong> ينقص الواكع 1</span>
-        <span class="game-note-item"><strong>💣 القنبلة:</strong> إذا تاخذها تنتهي اللعبة كبل</span>
+        <span class="game-note-item"><strong>💣 القنبلة:</strong> إذا تاخذها تنتهي اللعبة فوراً</span>
       </div>
 
       <div class="game-card">
@@ -846,74 +763,66 @@
           <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
         </div>
 
+        <div class="level-bar-wrap">
+          <div class="level-bar-top">
+            <span>Level <span id="levelText">1</span></span>
+            <span><span id="levelProgressText">0</span> / <span id="levelTargetText">25</span></span>
+          </div>
+          <div class="level-bar">
+            <div class="level-bar-fill" id="levelBarFill"></div>
+          </div>
+        </div>
+
         <div class="duck-game" id="duckGame">
           <div class="duck" id="duck">🦆</div>
           <div class="duck-ground"></div>
 
           <div class="game-over-box" id="gameOverBox">
-            <h3>خسرت  🥲</h3>
+            <h3>خسرت 🥲</h3>
             <p>نتيجتك: <span id="finalScore">0</span></p>
-            <button onclick="startDuckGame()">إعادة اللعب</button>
+            <button id="restartBtn" type="button">إعادة اللعب</button>
           </div>
         </div>
 
         <div class="mobile-hint">
-          <br>
+          على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
+          على الكمبيوتر: استخدم الأسهم يمين ويسار.
+        </div>
 
         <div class="btns" style="margin-top:16px;">
-          <button onclick="startDuckGame()">ابدأ اللعبة</button>
-          <button class="secondary" onclick="closeGameModal()">رجوع</button>
+          <button id="startBtn" type="button">ابدأ اللعبة</button>
+          <button class="secondary" onclick="goBack(5)">رجوع</button>
         </div>
       </div>
-    </div>
+
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+      </div>
+    </section>
+
   </div>
 
   <script>
-    function getLevelInfo(currentScore) {
-  if (currentScore < 25) {
-    return {
-      level: 1,
-      start: 0,
-      target: 25,
-      progress: currentScore
-    };
-  }
-
-  const extra = currentScore - 25;
-  const extraLevels = Math.floor(extra / 50);
-  const level = 2 + extraLevels;
-  const start = 25 + (extraLevels * 50);
-  const target = start + 50;
-  const progress = currentScore - start;
-
-  return { level, start, target, progress };
-}
-
-function updateLevelUI() {
-  const info = getLevelInfo(score);
-  level = info.level;
-
-  const needed = info.target - info.start;
-  const done = Math.max(0, Math.min(needed, info.progress));
-  const percent = (done / needed) * 100;
-
-  levelTextEl.textContent = info.level;
-  levelProgressTextEl.textContent = done;
-  levelTargetTextEl.textContent = needed;
-  levelBarFillEl.style.width = percent + "%";
-}
-
-    let level = 1;
-
-    function showLevelUp() {
-  const el = document.getElementById("levelUpText");
-  el.textContent = `LEVEL ${level} 🔥`;
-  el.classList.add("show");
-
-  setTimeout(() => {
-    el.classList.remove("show");
-  }, 900);
-}
+    function createConfetti() {
+      const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
+      for (let i = 0; i < 70; i++) {
+        const piece = document.createElement("div");
+        piece.classList.add("confetti");
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+        piece.style.width = (7 + Math.random() * 7) + "px";
+        piece.style.height = (10 + Math.random() * 12) + "px";
+        piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 5000);
+      }
+    }
 
     function goToPage(pageNumber, btn = null, party = false) {
       if (btn) {
@@ -925,48 +834,35 @@ function updateLevelUI() {
       if (party) createConfetti();
 
       const currentPage = document.querySelector(".page.active");
-      if (currentPage) {
-        currentPage.classList.remove("active");
+      if (currentPage) currentPage.classList.remove("active");
+
+      if (pageNumber !== 6) {
+        stopDuckGame();
       }
 
       setTimeout(() => {
         const nextPage = document.getElementById("page" + pageNumber);
         nextPage.classList.add("active");
         runTypewriters(nextPage);
+        if (pageNumber === 6) {
+          updateBestScore();
+          updateLevelUI();
+          setTimeout(resetDuckPosition, 30);
+        }
       }, 220);
     }
 
     function goBack(pageNumber) {
       const currentPage = document.querySelector(".page.active");
-      if (currentPage) {
-        currentPage.classList.remove("active");
-      }
+      if (currentPage) currentPage.classList.remove("active");
+
+      stopDuckGame();
 
       setTimeout(() => {
         const prevPage = document.getElementById("page" + pageNumber);
         prevPage.classList.add("active");
         runTypewriters(prevPage);
       }, 220);
-    }
-
-    function createConfetti() {
-      const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
-
-      for (let i = 0; i < 70; i++) {
-        const piece = document.createElement("div");
-        piece.classList.add("confetti");
-        piece.style.left = Math.random() * 100 + "vw";
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = (2 + Math.random() * 2.5) + "s";
-        piece.style.width = (7 + Math.random() * 7) + "px";
-        piece.style.height = (10 + Math.random() * 12) + "px";
-        piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
-        document.body.appendChild(piece);
-
-        setTimeout(() => {
-          piece.remove();
-        }, 5000);
-      }
     }
 
     function playSong() {
@@ -1003,7 +899,6 @@ function updateLevelUI() {
     function typeWriter(element, text, speed = 35) {
       element.textContent = "";
       let i = 0;
-
       function write() {
         if (i < text.length) {
           element.textContent += text.charAt(i);
@@ -1011,7 +906,6 @@ function updateLevelUI() {
           setTimeout(write, speed);
         }
       }
-
       write();
     }
 
@@ -1023,7 +917,6 @@ function updateLevelUI() {
       });
     }
 
-    const gameModal = document.getElementById("gameModal");
     const duckGame = document.getElementById("duckGame");
     const duck = document.getElementById("duck");
     const scoreEl = document.getElementById("score");
@@ -1035,6 +928,8 @@ function updateLevelUI() {
     const levelProgressTextEl = document.getElementById("levelProgressText");
     const levelTargetTextEl = document.getElementById("levelTargetText");
     const levelBarFillEl = document.getElementById("levelBarFill");
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
 
     let duckGameLoop = null;
     let spawnLoop = null;
@@ -1046,6 +941,50 @@ function updateLevelUI() {
     let moveLeft = false;
     let moveRight = false;
     let difficulty = 1;
+    let level = 1;
+
+    function getLevelInfo(currentScore) {
+      if (currentScore < 25) {
+        return {
+          level: 1,
+          start: 0,
+          target: 25,
+          progress: currentScore
+        };
+      }
+
+      const extra = currentScore - 25;
+      const extraLevels = Math.floor(extra / 50);
+      const currentLevel = 2 + extraLevels;
+      const start = 25 + (extraLevels * 50);
+      const target = start + 50;
+      const progress = currentScore - start;
+
+      return { level: currentLevel, start, target, progress };
+    }
+
+    function updateLevelUI() {
+      const info = getLevelInfo(score);
+      level = info.level;
+
+      const needed = info.target - info.start;
+      const done = Math.max(0, Math.min(needed, info.progress));
+      const percent = (done / needed) * 100;
+
+      levelTextEl.textContent = info.level;
+      levelProgressTextEl.textContent = done;
+      levelTargetTextEl.textContent = needed;
+      levelBarFillEl.style.width = percent + "%";
+    }
+
+    function showLevelUp() {
+      const el = document.getElementById("levelUpText");
+      el.textContent = `LEVEL ${level} 🔥`;
+      el.classList.add("show");
+      setTimeout(() => {
+        el.classList.remove("show");
+      }, 900);
+    }
 
     function updateBestScore() {
       const best = Number(localStorage.getItem("duckBestScore") || 0);
@@ -1061,7 +1000,8 @@ function updateLevelUI() {
     }
 
     function resetDuckPosition() {
-      duckX = duckGame.clientWidth / 2;
+      const gameWidth = duckGame.clientWidth || 320;
+      duckX = gameWidth / 2;
       duck.style.left = duckX + "px";
     }
 
@@ -1070,182 +1010,182 @@ function updateLevelUI() {
       items = [];
     }
 
- function spawnItem() {
-  if (!gameRunning) return;
+    function createSingleItem(type = null, forcedX = null) {
+      const gameWidth = duckGame.clientWidth || 320;
+      const minX = 15;
+      const maxX = Math.max(70, gameWidth - 45);
 
-  const gameWidth = duckGame.clientWidth || 320;
-  const minX = 20;
-  const maxX = Math.max(80, gameWidth - 50);
+      let itemType = type;
+      let symbol = "🥖";
 
-  /* هنا غيرت: زيادة أوضح ومستمرة بسرعة النزول */
-  difficulty = Math.min(5, 1 + (score * 0.1));
-
-  function createSingleItem(type = null, forcedX = null) {
-    let itemType = type;
-    let symbol = "🥖";
-
-    if (!itemType) {
-      const rand = Math.random();
-      itemType = "bread";
-
-      if (rand < 0.12) {
-        itemType = "bomb";
-      } else if (rand < 0.24) {
-        itemType = "heart";
-      }
-    }
-
-    if (itemType === "bomb") symbol = "💣";
-    if (itemType === "heart") symbol = "❤️";
-
-    const el = document.createElement("div");
-    el.className = "falling-item";
-    el.textContent = symbol;
-
-    const x = forcedX !== null
-      ? forcedX
-      : Math.random() * (maxX - minX) + minX;
-
-    // هنا غيرت: ترتيب السرعات بشكل متوازن
-const speed =
-  type === "bomb" 
-    ? (1.1 + Math.random() * 0.3) * difficulty
-    : type === "heart" 
-    ? (1.4 + Math.random() * 0.4) * difficulty
-    : (2.0 + Math.random() * 0.8) * difficulty;
-
-    duckGame.appendChild(el);
-
-    items.push({
-      el,
-      type: itemType,
-      x,
-      y: -40,
-      speed,
-      width: 34,
-      height: 34
-    });
-  }
-
-  /* هنا غيرت: احتمال نزول عنصرين يزيد مع السكور */
-  const doubleDropChance = Math.min(0.55, 0.12 + score * 0.015);
-
-  if (Math.random() < doubleDropChance) {
-    const leftX = Math.random() * ((gameWidth / 2) - 50) + 15;
-    const rightX = Math.random() * ((gameWidth / 2) - 50) + (gameWidth / 2);
-
-    /* غالبًا خبزتين حتى تصير أصعب */
-    createSingleItem("bread", leftX);
-    createSingleItem("bread", rightX);
-  } else {
-    createSingleItem();
-  }
-}
-
-function updateGame() {
-  if (!gameRunning) return;
-
-  const gameWidth = duckGame.clientWidth || 320;
-  const gameHeight = duckGame.clientHeight || 420;
-  const duckY = gameHeight - 74 - 52;
-
-  if (moveLeft) duckX -= 6;
-  if (moveRight) duckX += 6;
-
-  if (duckX < 26) duckX = 26;
-  if (duckX > gameWidth - 26) duckX = gameWidth - 26;
-
-  duck.style.left = duckX + "px";
-
-  for (let i = items.length - 1; i >= 0; i--) {
-    const item = items[i];
-
-    item.y += item.speed;
-    item.el.style.top = item.y + "px";
-
-    const itemCenterX = item.x + item.width / 2;
-    const itemBottomY = item.y + item.height;
-
-    const duckLeft = duckX - 28;
-    const duckRight = duckX + 28;
-    const duckTop = duckY;
-    const duckBottom = duckY + 52;
-
-    const caught =
-      itemCenterX > duckLeft &&
-      itemCenterX < duckRight &&
-      itemBottomY > duckTop &&
-      item.y < duckBottom;
-
-    if (caught) {
-      item.el.remove();
-      items.splice(i, 1);
-
-      if (item.type === "bread") {
-  const oldLevel = getLevelInfo(score).level;
-
-  score++;
-  scoreEl.textContent = score;
-  updateLevelUI();
-
-  const newLevel = getLevelInfo(score).level;
-  if (newLevel > oldLevel) {
-    showLevelUp();
-  }
-}
-       else if (item.type === "heart") {
-        if (misses > 0) {
-          misses--;
-          missesEl.textContent = misses;
-        }
-      } else if (item.type === "bomb") {
-        endDuckGame();
-        return;
-      }
-
-      continue;
-    }
-
-    if (item.y > gameHeight - 80) {
-      item.el.remove();
-      items.splice(i, 1);
-
-      /* هنا غيرت: فقط الخبزة إذا طاحت تزيد الفاقد */
-      if (item.type === "bread") {
-        misses++;
-        missesEl.textContent = misses;
-
-        if (misses >= 3) {
-          endDuckGame();
-          return;
+      if (!itemType) {
+        const rand = Math.random();
+        itemType = "bread";
+        if (rand < 0.12) {
+          itemType = "bomb";
+        } else if (rand < 0.24) {
+          itemType = "heart";
         }
       }
+
+      if (itemType === "bomb") symbol = "💣";
+      if (itemType === "heart") symbol = "❤️";
+
+      const el = document.createElement("div");
+      el.className = "falling-item";
+      el.textContent = symbol;
+
+      const x = forcedX !== null
+        ? Math.max(minX, Math.min(maxX, forcedX))
+        : Math.random() * (maxX - minX) + minX;
+
+      const speed =
+        itemType === "bomb"
+          ? (1.1 + Math.random() * 0.3) * difficulty
+          : itemType === "heart"
+          ? (1.45 + Math.random() * 0.35) * difficulty
+          : (1.9 + Math.random() * 0.8) * difficulty;
+
+      el.style.left = x + "px";
+      el.style.top = "-40px";
+
+      duckGame.appendChild(el);
+
+      items.push({
+        el,
+        type: itemType,
+        x,
+        y: -40,
+        speed,
+        width: 34,
+        height: 34
+      });
     }
-  }
 
-  duckGameLoop = requestAnimationFrame(updateGame);
-}
+    function spawnItem() {
+      if (!gameRunning) return;
 
- function startDuckGame() {
-  stopDuckGame(false);
+      difficulty = 1 + Math.floor(score / 10) * 0.22 + score * 0.015;
 
-  score = 0;
-  misses = 0;
-  difficulty = 1;
-  level = 1;
-  gameRunning = true;
-  scoreEl.textContent = "0";
-  missesEl.textContent = "0";
-  finalScoreEl.textContent = "0";
-  gameOverBox.classList.remove("show");
-  clearFallingItems();
-  resetDuckPosition();
-  updateBestScore();
-  updateLevelUI();
+      const gameWidth = duckGame.clientWidth || 320;
+      const doubleDropChance = Math.min(0.65, 0.12 + score * 0.012);
 
-  spawnLoop = setInterval(spawnItem, 850);
-  duckGameLoop = requestAnimationFrame(updateGame);
-}
+      if (Math.random() < doubleDropChance) {
+        const leftMin = 15;
+        const leftMax = Math.max(40, gameWidth / 2 - 50);
+        const rightMin = Math.min(gameWidth - 60, gameWidth / 2 + 10);
+        const rightMax = Math.max(rightMin + 5, gameWidth - 50);
+
+        const leftX = Math.random() * (leftMax - leftMin) + leftMin;
+        const rightX = Math.random() * (rightMax - rightMin) + rightMin;
+
+        createSingleItem("bread", leftX);
+        createSingleItem("bread", rightX);
+      } else {
+        createSingleItem();
+      }
+    }
+
+    function updateGame() {
+      if (!gameRunning) return;
+
+      const gameWidth = duckGame.clientWidth || 320;
+      const gameHeight = duckGame.clientHeight || 420;
+      const duckY = gameHeight - 74 - 52;
+
+      if (moveLeft) duckX -= 7;
+      if (moveRight) duckX += 7;
+
+      if (duckX < 26) duckX = 26;
+      if (duckX > gameWidth - 26) duckX = gameWidth - 26;
+
+      duck.style.left = duckX + "px";
+
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        item.y += item.speed;
+        item.el.style.top = item.y + "px";
+
+        const itemCenterX = item.x + item.width / 2;
+        const itemBottomY = item.y + item.height;
+
+        const duckLeft = duckX - 28;
+        const duckRight = duckX + 28;
+        const duckTop = duckY;
+        const duckBottom = duckY + 52;
+
+        const caught =
+          itemCenterX > duckLeft &&
+          itemCenterX < duckRight &&
+          itemBottomY > duckTop &&
+          item.y < duckBottom;
+
+        if (caught) {
+          item.el.remove();
+          items.splice(i, 1);
+
+          if (item.type === "bread") {
+            const oldLevel = getLevelInfo(score).level;
+            score++;
+            scoreEl.textContent = score;
+            updateLevelUI();
+
+            const newLevel = getLevelInfo(score).level;
+            if (newLevel > oldLevel) {
+              showLevelUp();
+            }
+          } else if (item.type === "heart") {
+            if (misses > 0) {
+              misses--;
+              missesEl.textContent = misses;
+            }
+          } else if (item.type === "bomb") {
+            endDuckGame();
+            return;
+          }
+
+          continue;
+        }
+
+        if (item.y > gameHeight - 80) {
+          item.el.remove();
+          items.splice(i, 1);
+
+          if (item.type === "bread") {
+            misses++;
+            missesEl.textContent = misses;
+            if (misses >= 3) {
+              endDuckGame();
+              return;
+            }
+          }
+        }
+      }
+
+      duckGameLoop = requestAnimationFrame(updateGame);
+    }
+
+    function startDuckGame() {
+      stopDuckGame(false);
+
+      score = 0;
+      misses = 0;
+      difficulty = 1;
+      level = 1;
+      gameRunning = true;
+      scoreEl.textContent = "0";
+      missesEl.textContent = "0";
+      finalScoreEl.textContent = "0";
+      gameOverBox.classList.remove("show");
+      clearFallingItems();
+      resetDuckPosition();
+      updateBestScore();
+      updateLevelUI();
+
+      spawnLoop = setInterval(spawnItem, 850);
+      duckGameLoop = requestAnimationFrame(updateGame);
+    }
+
     function endDuckGame() {
       gameRunning = false;
       if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
@@ -1269,54 +1209,24 @@ function updateGame() {
       }
     }
 
-    function openGameModal() {
-      gameModal.classList.add("show");
-      gameModal.scrollTop = 0;
-
-      const panel = gameModal.querySelector(".game-panel");
-      if (panel) panel.scrollTop = 0;
-
-      updateBestScore();
-
-      setTimeout(() => {
-        resetDuckPosition();
-      }, 50);
-    }
-
-    function closeGameModal() {
-      gameModal.classList.remove("show");
-      stopDuckGame();
-    }
-
     document.addEventListener("keydown", (e) => {
-      if (!gameModal.classList.contains("show")) return;
+      const gamePage = document.getElementById("page6");
+      if (!gamePage.classList.contains("active")) return;
 
-      if (e.key === "ArrowLeft") {
-        moveLeft = true;
-      }
-      if (e.key === "ArrowRight") {
-        moveRight = true;
-      }
-      if (e.key === "Escape") {
-        closeGameModal();
-      }
+      if (e.key === "ArrowLeft") moveLeft = true;
+      if (e.key === "ArrowRight") moveRight = true;
     });
 
     document.addEventListener("keyup", (e) => {
-      if (e.key === "ArrowLeft") {
-        moveLeft = false;
-      }
-      if (e.key === "ArrowRight") {
-        moveRight = false;
-      }
+      if (e.key === "ArrowLeft") moveLeft = false;
+      if (e.key === "ArrowRight") moveRight = false;
     });
 
-    duckGame.addEventListener("touchstart", handleTouchMove, { passive: false });
-    duckGame.addEventListener("touchmove", handleTouchMove, { passive: false });
+    duckGame.addEventListener("touchstart", handleTouchMove, { passive: true });
+    duckGame.addEventListener("touchmove", handleTouchMove, { passive: true });
     duckGame.addEventListener("click", handleClickMove);
 
     function handleTouchMove(e) {
-      e.preventDefault();
       const touch = e.touches[0];
       if (!touch) return;
 
@@ -1341,14 +1251,11 @@ function updateGame() {
       duck.style.left = duckX + "px";
     }
 
-    gameModal.addEventListener("click", (e) => {
-      if (e.target === gameModal) {
-        closeGameModal();
-      }
-    });
+    startBtn.addEventListener("click", startDuckGame);
+    restartBtn.addEventListener("click", startDuckGame);
 
     window.addEventListener("resize", () => {
-      if (gameModal.classList.contains("show")) {
+      if (document.getElementById("page6").classList.contains("active")) {
         resetDuckPosition();
       }
     });
@@ -1356,6 +1263,7 @@ function updateGame() {
     createStars();
     runTypewriters(document.getElementById("page1"));
     updateBestScore();
+    updateLevelUI();
   </script>
 </body>
 </html>
