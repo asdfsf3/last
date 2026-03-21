@@ -584,10 +584,19 @@
         width: auto;
       }
 
+      .game-modal {
+        padding: 12px;
+      }
+
+      .game-panel {
+        margin: 12px 0 24px;
+        padding: 18px 14px;
+      }
       .game-close {
         width: auto;
       }
-    }
+
+     }
     /* هنا غيرت: صندوق شرح اللعبة */
 .game-note {
   width: 100%;
@@ -932,24 +941,44 @@
       items = [];
     }
 
+        /* هنا غيرت: نزول أبطأ + إضافة قلوب وقنابل */
     function spawnItem() {
       if (!gameRunning) return;
 
+      const rand = Math.random();
+      let type = "bread";
+      let symbol = "🥖";
+
+      if (rand < 0.15) {
+        type = "bomb";
+        symbol = "💣";
+      } else if (rand < 0.30) {
+        type = "heart";
+        symbol = "❤️";
+      }
+
       const el = document.createElement("div");
       el.className = "falling-item";
-      el.textContent = "🥖";
+      el.textContent = symbol;
 
       const minX = 20;
       const maxX = duckGame.clientWidth - 50;
       const x = Math.random() * (maxX - minX) + minX;
-      const speed = 2.6 + Math.random() * 1.8;
+
+      /* أبطأ من قبل */
+      const speed =
+        type === "bomb" ? (1.8 + Math.random() * 0.8) :
+        type === "heart" ? (1.6 + Math.random() * 0.7) :
+        (1.7 + Math.random() * 0.9);
 
       el.style.left = x + "px";
       el.style.top = "-40px";
 
       duckGame.appendChild(el);
+
       items.push({
         el,
+        type,
         x,
         y: -40,
         speed,
@@ -992,11 +1021,23 @@
           itemBottomY > duckTop &&
           item.y < duckBottom;
 
-        if (caught) {
+               if (caught) {
           item.el.remove();
           items.splice(i, 1);
-          score++;
-          scoreEl.textContent = score;
+
+          if (item.type === "bread") {
+            score++;
+            scoreEl.textContent = score;
+          } else if (item.type === "heart") {
+            if (misses > 0) {
+              misses--;
+              missesEl.textContent = misses;
+            }
+          } else if (item.type === "bomb") {
+            endDuckGame();
+            return;
+          }
+
           continue;
         }
 
@@ -1070,14 +1111,15 @@
       stopDuckGame();
     }
 
+        /* هنا غيرت: اتجاه الأسهم صار صحيح */
     document.addEventListener("keydown", (e) => {
       if (!gameModal.classList.contains("show")) return;
 
       if (e.key === "ArrowLeft") {
-        moveRight = true;
+        moveLeft = true;
       }
       if (e.key === "ArrowRight") {
-        moveLeft = true;
+        moveRight = true;
       }
       if (e.key === "Escape") {
         closeGameModal();
@@ -1086,10 +1128,10 @@
 
     document.addEventListener("keyup", (e) => {
       if (e.key === "ArrowLeft") {
-        moveRight = false;
+        moveLeft = false;
       }
       if (e.key === "ArrowRight") {
-        moveLeft = false;
+        moveRight = false;
       }
     });
 
@@ -1097,20 +1139,29 @@
     duckGame.addEventListener("touchmove", handleTouchMove, { passive: false });
     duckGame.addEventListener("click", handleClickMove);
 
+        /* هنا غيرت: تثبيت حركة البطّة داخل حدود اللعبة */
     function handleTouchMove(e) {
       e.preventDefault();
       const touch = e.touches[0];
       if (!touch) return;
 
       const rect = duckGame.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
+      let x = touch.clientX - rect.left;
+
+      if (x < 26) x = 26;
+      if (x > rect.width - 26) x = rect.width - 26;
+
       duckX = x;
       duck.style.left = duckX + "px";
     }
 
     function handleClickMove(e) {
       const rect = duckGame.getBoundingClientRect();
-      const x = e.clientX - rect.left;
+      let x = e.clientX - rect.left;
+
+      if (x < 26) x = 26;
+      if (x > rect.width - 26) x = rect.width - 26;
+
       duckX = x;
       duck.style.left = duckX + "px";
     }
