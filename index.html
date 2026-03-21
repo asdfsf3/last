@@ -588,6 +588,29 @@
         width: auto;
       }
     }
+    /* هنا غيرت: صندوق شرح اللعبة */
+.game-note {
+  width: 100%;
+  max-width: 620px;
+  margin: 12px auto 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 14px;
+  text-align: right;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.9;
+  font-size: 15px;
+}
+
+.game-note strong {
+  color: #fff;
+}
+
+.game-note-item {
+  display: block;
+  margin-bottom: 6px;
+}
   </style>
 </head>
 <body>
@@ -720,7 +743,12 @@
       <div class="icon">🦆</div>
       <h2>لعبة البطّة</h2>
       <p>التقط الخبز قبل لا يطيح. إذا ضاع 3 مرات تنتهي اللعبة 😏</p>
-
+<!-- هنا غيرت: شرح اللعبة -->
+<div class="game-note">
+  <span class="game-note-item"><strong>🥖 الخبزة:</strong> تزيد نقطة +1</span>
+  <span class="game-note-item"><strong>❤️ القلب:</strong> ينقص الفاقد 1</span>
+  <span class="game-note-item"><strong>💣 القنبلة:</strong> إذا تاخذها تنتهي اللعبة فوراً</span>
+</div>
       <div class="game-card">
         <div class="game-info">
           <div class="game-badge">النقاط: <span id="score">0</span></div>
