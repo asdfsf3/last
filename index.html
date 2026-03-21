@@ -20,7 +20,6 @@
       --secondary: #8d6bff;
       --pink: #ff72c8;
       --white: #ffffff;
-      --soft: rgba(255,255,255,0.08);
       --soft-border: rgba(255,255,255,0.12);
       --text-dim: rgba(255,255,255,0.82);
     }
@@ -30,10 +29,11 @@
       background:
         radial-gradient(circle at top, rgba(255, 114, 200, 0.12), transparent 30%),
         radial-gradient(circle at bottom left, rgba(110, 168, 255, 0.12), transparent 35%),
-        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
-      color: var(--white);
+        linear-gradient(135deg, #071225, #111c44, #3c1b74);
+      color: white;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
     }
 
@@ -104,7 +104,7 @@
       opacity: 0;
       transform: translateX(60px) scale(0.98);
       transition: opacity 0.6s ease, transform 0.6s ease;
-      position: absolute;
+      position: relative;
       visibility: hidden;
     }
 
@@ -204,6 +204,7 @@
       flex-wrap: wrap;
       justify-content: center;
       margin-top: 8px;
+      width: 100%;
     }
 
     button {
@@ -270,7 +271,7 @@
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: 1fr;
       gap: 16px;
       width: 100%;
       max-width: 620px;
@@ -279,8 +280,8 @@
 
     .gallery img {
       width: 100%;
-      height: 240px;
-      object-fit: cover;
+      height: auto;
+      display: block;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 10px 25px rgba(0,0,0,0.22);
@@ -288,7 +289,7 @@
     }
 
     .gallery img:hover {
-      transform: scale(1.04) translateY(-4px);
+      transform: scale(1.02) translateY(-2px);
     }
 
     .audio-card {
@@ -356,22 +357,235 @@
       min-height: 72px;
     }
 
+    /* هنا غيرت: زر اللعبة الثابت */
+    .game-fab {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 10001;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--pink));
+      box-shadow:
+        0 10px 25px rgba(141, 107, 255, 0.34),
+        0 0 20px rgba(255, 114, 200, 0.18);
+      backdrop-filter: blur(10px);
+      transition: 0.25s ease;
+    }
+
+    .game-fab:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* هنا غيرت: نافذة اللعبة */
+    .game-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(3, 10, 20, 0.62);
+      backdrop-filter: blur(10px);
+    }
+
+    .game-modal.show {
+      display: flex;
+    }
+
+    .game-panel {
+      width: min(94vw, 720px);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 30px;
+      padding: 22px 18px;
+      box-shadow:
+        0 0 40px rgba(141, 107, 255, 0.18),
+        0 20px 50px rgba(0,0,0,0.28);
+      text-align: center;
+      position: relative;
+    }
+
+    .game-panel .icon {
+      margin-bottom: 8px;
+    }
+
+    .game-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .game-topbar .badge {
+      margin-bottom: 0;
+    }
+
+    .game-close {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: none;
+      padding: 10px 16px;
+      font-size: 15px;
+    }
+
+    .game-card {
+      width: 100%;
+      max-width: 620px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 18px;
+      margin: 10px auto 0;
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.02);
+    }
+
+    .game-info {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .game-badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    .duck-game {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      height: 460px;
+      margin: 0 auto;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 35%),
+        linear-gradient(180deg, #89c8ff 0%, #97d2ff 35%, #b8e2ff 65%, #dff6ff 100%);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.2);
+      touch-action: none;
+    }
+
+    .duck-ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      background: linear-gradient(180deg, #7fdc89, #4cae5e);
+      border-top: 2px solid rgba(255,255,255,0.25);
+    }
+
+    .duck {
+      position: absolute;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 52px;
+      user-select: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.2));
+      z-index: 2;
+    }
+
+    .falling-item {
+      position: absolute;
+      top: -40px;
+      font-size: 34px;
+      user-select: none;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
+      z-index: 2;
+    }
+
+    .game-over-box {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(7, 18, 37, 0.55);
+      backdrop-filter: blur(6px);
+      z-index: 5;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .game-over-box.show {
+      display: flex;
+    }
+
+    .game-over-box h3 {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .game-over-box p {
+      margin-bottom: 18px;
+      color: rgba(255,255,255,0.88);
+      max-width: 100%;
+    }
+
+    .mobile-hint {
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.74);
+      line-height: 1.8;
+    }
+
     @media (max-width: 600px) {
       .page {
         min-height: 82vh;
         padding: 28px 16px;
       }
 
-      .gallery img {
-        height: 180px;
-      }
-
       button {
         width: 100%;
       }
 
-      .btns {
-        width: 100%;
+      .gallery img {
+        border-radius: 18px;
+      }
+
+      .duck-game {
+        height: 420px;
+      }
+
+      .duck {
+        font-size: 46px;
+      }
+
+      .falling-item {
+        font-size: 30px;
+      }
+
+      .game-fab {
+        top: 14px;
+        left: 14px;
+        font-size: 14px;
+        padding: 10px 14px;
+        width: auto;
+      }
+
+      .game-close {
+        width: auto;
       }
     }
   </style>
@@ -380,7 +594,11 @@
 
   <div class="stars" id="stars"></div>
 
+  <!-- هنا غيرت: زر ثابت يفتح اللعبة -->
+  <button class="game-fab" onclick="openGameModal()">🦆 لعبة البطّة</button>
+
   <div class="container">
+
     <section class="page active" id="page1">
       <div class="badge">رسالة خاصة إلى نونو</div>
       <div class="icon">💌</div>
@@ -403,9 +621,9 @@
       <h1>عيدج مبارك يا <span class="name">قزومه</span></h1>
       <p class="typewriter" data-text="كل عام وإنتِ بخير وفرح وسعادة، وإن شاء الله تبقين أجمل صدفة وأحلى بنيه بالدنيا كلها."></p>
       <div class="btns">
-  <button class="secondary" onclick="goBack(1)"> رجوع →</button>
-  <button onclick="goToPage(3, this, true)">الرسالة اللي بعدها ←</button>
-</div>
+        <button class="secondary" onclick="goBack(1)">رجوع →</button>
+        <button onclick="goToPage(3, this, true)">الرسالة اللي بعدها ←</button>
+      </div>
       <div class="dots">
         <span class="dot"></span>
         <span class="dot active"></span>
@@ -417,14 +635,14 @@
 
     <section class="page" id="page3">
       <div class="icon">✨</div>
-      <h2>عود كلمة من اعماق كلبي وهاي <span class="subname"></span></h2>
+      <h2>عود كلمة من أعماق كلبي</h2>
       <div class="message-box">
-        <p class="typewriter" data-text=" نمنم، أتمنى لج أيام كلها ضحكة وراحة، وإن شاء الله كل عيد وانتي أقرب لكلبي وأكثر وحدة تفرحيني والقران يعني صدك الي يحجي وياج يرتاح و اي بعد مادري شكتب هيه المهم. "></p>
+        <p class="typewriter" data-text="نمنم أتمنى لج أيام كلها ضحكة وراحة، وإن شاء الله كل عيد وانتي أقرب لكلبي وأكثر وحدة تفرحيني، والقران يعني صدك الي يحچي وياج يرتاح، وإي بعد مادري شكتب، هيه المهم."></p>
       </div>
-<div class="btns">
-  <button class="secondary" onclick="goBack(2)"> رجوع →</button>
-  <button onclick="goToPage(4, this, true)">شوفي الصور <span class="arrow">←</span></button>
-</div>
+      <div class="btns">
+        <button class="secondary" onclick="goBack(2)">رجوع →</button>
+        <button onclick="goToPage(4, this, true)">شوفي الصور <span class="arrow">←</span></button>
+      </div>
       <div class="dots">
         <span class="dot"></span>
         <span class="dot"></span>
@@ -436,9 +654,8 @@
 
     <section class="page" id="page4">
       <div class="icon">📸</div>
-      <h2>هاي ستكراتج مادري ليش خليتهه
-</h2>
-      <p class="typewriter" data-text=></p>
+      <h2>هاي ستكراتج مادري ليش خليتهه</h2>
+      <p class="typewriter" data-text="بس المهم يمعودات طلعن حلوات هنا."></p>
 
       <div class="gallery">
         <img src="photo1.jpg" alt="الصورة الأولى">
@@ -447,160 +664,444 @@
       </div>
 
       <div class="btns">
-  <button class="secondary" onclick="goBack(3)"> رجوع →</button>
-  <button onclick="goToPage(5, this, true)">آخر مفاجأة <span class="arrow">←</span></button>
-</div>
+        <button class="secondary" onclick="goBack(3)">رجوع →</button>
+        <button onclick="goToPage(5, this, true)">آخر مفاجأة <span class="arrow">←</span></button>
+      </div>
 
-<div class="dots">
-  <span class="dot"></span>
-  <span class="dot"></span>
-  <span class="dot"></span>
-  <span class="dot active"></span>
-  <span class="dot"></span>
-</div>
-</section>
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
 
-<section class="page" id="page5">
-  <div class="badge">أغنية خاصة إلى نونو</div>
-  <div class="icon">🎵</div>
+    <section class="page" id="page5">
+      <div class="badge">أغنية خاصة إلى نونو</div>
+      <div class="icon">🎵</div>
+      <h2>هاي الأغنية من <span class="subname">عمار القيسييي</span> إلى <span class="name">نمنمم</span></h2>
+      <p>هاي الأغنية أتوقع تحبيهه</p>
 
-  <h2>هاي الأغنية من <span class="subname">عمار القيسييي</span> إلى <span class="name">نمنمم</span></h2>
+      <div class="audio-card">
+        <audio id="song" controls>
+          <source src="song.mp3" type="audio/mpeg">
+          متصفحك ما يدعم تشغيل الصوت.
+        </audio>
 
-  <p>هاي الأغنية اتوقع تحبيهه </p>
+        <div class="btns" style="margin-top:16px;">
+          <button class="secondary" onclick="goBack(4)">⬅️ رجوع</button>
+          <button onclick="playSong()">تشغيل الأغنية</button>
+          <button class="secondary" onclick="pauseSong()">إيقاف الأغنية</button>
+        </div>
 
-  <div class="audio-card">
+        <div class="audio-note"></div>
+      </div>
 
-    <audio id="song" controls>
-      <source src="song.mp3" type="audio/mpeg">
-      متصفحك ما يدعم تشغيل الصوت.
-    </audio>
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+      </div>
+    </section>
 
-    <div class="btns" style="margin-top:16px;">
-      <button class="secondary" onclick="goBack(4)">⬅️ رجوع</button>
-      <button onclick="playSong()">تشغيل الأغنية</button>
-      <button class="secondary" onclick="pauseSong()">إيقاف الأغنية</button>
-    </div>
-
-    <div class="audio-note">
-    </div>
-
-  <div class="dots">
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot active"></span>
   </div>
-</section>
+
+  <!-- هنا غيرت: نافذة اللعبة -->
+  <div class="game-modal" id="gameModal">
+    <div class="game-panel">
+      <div class="game-topbar">
+        <div class="badge">Duck Catch</div>
+        <button class="game-close" onclick="closeGameModal()">إغلاق ✕</button>
+      </div>
+
+      <div class="icon">🦆</div>
+      <h2>لعبة البطّة</h2>
+      <p>التقط الخبز قبل لا يطيح. إذا ضاع 3 مرات تنتهي اللعبة 😏</p>
+
+      <div class="game-card">
+        <div class="game-info">
+          <div class="game-badge">النقاط: <span id="score">0</span></div>
+          <div class="game-badge">الفاقد: <span id="misses">0</span> / 3</div>
+          <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
+        </div>
+
+        <div class="duck-game" id="duckGame">
+          <div class="duck" id="duck">🦆</div>
+          <div class="duck-ground"></div>
+
+          <div class="game-over-box" id="gameOverBox">
+            <h3>خلصت اللعبة 🥲</h3>
+            <p>نتيجتك: <span id="finalScore">0</span></p>
+            <button onclick="startDuckGame()">إعادة اللعب</button>
+          </div>
+        </div>
+
+        <div class="mobile-hint">
+          على التلفون: المس داخل مساحة اللعبة حتى تتحرك البطّة. <br>
+          على الكمبيوتر: استخدم الأسهم يمين ويسار.
+        </div>
+
+        <div class="btns" style="margin-top:16px;">
+          <button onclick="startDuckGame()">ابدأ اللعبة</button>
+          <button class="secondary" onclick="closeGameModal()">رجوع</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-function goToPage(pageNumber, btn = null, party = false) {
-  if (btn) {
-    btn.classList.remove("shake");
-    void btn.offsetWidth;
-    btn.classList.add("shake");
-  }
+    function goToPage(pageNumber, btn = null, party = false) {
+      if (btn) {
+        btn.classList.remove("shake");
+        void btn.offsetWidth;
+        btn.classList.add("shake");
+      }
 
-  if (party) createConfetti();
+      if (party) createConfetti();
 
-  const currentPage = document.querySelector(".page.active");
-  if (currentPage) {
-    currentPage.classList.remove("active");
-  }
+      const currentPage = document.querySelector(".page.active");
+      if (currentPage) {
+        currentPage.classList.remove("active");
+      }
 
-  setTimeout(() => {
-    const nextPage = document.getElementById("page" + pageNumber);
-    nextPage.classList.add("active");
-    runTypewriters(nextPage);
-  }, 220);
-}
-
-function goBack(pageNumber) {
-  const currentPage = document.querySelector(".page.active");
-  if (currentPage) {
-    currentPage.classList.remove("active");
-  }
-
-  setTimeout(() => {
-    const prevPage = document.getElementById("page" + pageNumber);
-    prevPage.classList.add("active");
-    runTypewriters(prevPage);
-  }, 220);
-}
-
-function createConfetti() {
-  const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
-
-  for (let i = 0; i < 70; i++) {
-    const piece = document.createElement("div");
-    piece.classList.add("confetti");
-    piece.style.left = Math.random() * 100 + "vw";
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.animationDuration = (2 + Math.random() * 2.5) + "s";
-    piece.style.width = (7 + Math.random() * 7) + "px";
-    piece.style.height = (10 + Math.random() * 12) + "px";
-    piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
-    document.body.appendChild(piece);
-
-    setTimeout(() => {
-      piece.remove();
-    }, 5000);
-  }
-}
-
-function playSong() {
-  document.getElementById("song").play();
-}
-
-function pauseSong() {
-  document.getElementById("song").pause();
-}
-
-const song = document.getElementById("song");
-song.addEventListener("loadedmetadata", () => {
-  song.currentTime = 218;
-});
-
-function createStars() {
-  const starsContainer = document.getElementById("stars");
-  const count = 65;
-
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement("span");
-    star.classList.add("star");
-    const size = Math.random() * 3 + 1;
-    star.style.width = size + "px";
-    star.style.height = size + "px";
-    star.style.top = Math.random() * 100 + "%";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.animationDuration = (4 + Math.random() * 5) + "s";
-    star.style.animationDelay = Math.random() * 4 + "s";
-    starsContainer.appendChild(star);
-  }
-}
-
-function typeWriter(element, text, speed = 35) {
-  element.textContent = "";
-  let i = 0;
-
-  function write() {
-    if (i < text.length) {
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(write, speed);
+      setTimeout(() => {
+        const nextPage = document.getElementById("page" + pageNumber);
+        nextPage.classList.add("active");
+        runTypewriters(nextPage);
+      }, 220);
     }
-  }
 
-  write();
-}
+    function goBack(pageNumber) {
+      const currentPage = document.querySelector(".page.active");
+      if (currentPage) {
+        currentPage.classList.remove("active");
+      }
 
-function runTypewriters(scope = document) {
-  const items = scope.querySelectorAll(".typewriter");
-  items.forEach((el) => {
-    const text = el.getAttribute("data-text");
-    typeWriter(el, text, 28);
-  });
-}
+      setTimeout(() => {
+        const prevPage = document.getElementById("page" + pageNumber);
+        prevPage.classList.add("active");
+        runTypewriters(prevPage);
+      }, 220);
+    }
 
-createStars();
-runTypewriters(document.getElementById("page1"));
-</script>
+    function createConfetti() {
+      const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
+
+      for (let i = 0; i < 70; i++) {
+        const piece = document.createElement("div");
+        piece.classList.add("confetti");
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+        piece.style.width = (7 + Math.random() * 7) + "px";
+        piece.style.height = (10 + Math.random() * 12) + "px";
+        piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        document.body.appendChild(piece);
+
+        setTimeout(() => {
+          piece.remove();
+        }, 5000);
+      }
+    }
+
+    function playSong() {
+      document.getElementById("song").play();
+    }
+
+    function pauseSong() {
+      document.getElementById("song").pause();
+    }
+
+    const song = document.getElementById("song");
+    song.addEventListener("loadedmetadata", () => {
+      song.currentTime = 218;
+    });
+
+    function createStars() {
+      const starsContainer = document.getElementById("stars");
+      const count = 65;
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement("span");
+        star.classList.add("star");
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + "px";
+        star.style.height = size + "px";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDuration = (4 + Math.random() * 5) + "s";
+        star.style.animationDelay = Math.random() * 4 + "s";
+        starsContainer.appendChild(star);
+      }
+    }
+
+    function typeWriter(element, text, speed = 35) {
+      element.textContent = "";
+      let i = 0;
+
+      function write() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(write, speed);
+        }
+      }
+
+      write();
+    }
+
+    function runTypewriters(scope = document) {
+      const items = scope.querySelectorAll(".typewriter");
+      items.forEach((el) => {
+        const text = el.getAttribute("data-text") || "";
+        typeWriter(el, text, 28);
+      });
+    }
+
+    /* هنا غيرت: كود لعبة Duck Catch بالكامل */
+    const gameModal = document.getElementById("gameModal");
+    const duckGame = document.getElementById("duckGame");
+    const duck = document.getElementById("duck");
+    const scoreEl = document.getElementById("score");
+    const missesEl = document.getElementById("misses");
+    const bestScoreEl = document.getElementById("bestScore");
+    const finalScoreEl = document.getElementById("finalScore");
+    const gameOverBox = document.getElementById("gameOverBox");
+
+    let duckGameLoop = null;
+    let spawnLoop = null;
+    let duckX = 0;
+    let score = 0;
+    let misses = 0;
+    let gameRunning = false;
+    let items = [];
+    let moveLeft = false;
+    let moveRight = false;
+
+    function updateBestScore() {
+      const best = Number(localStorage.getItem("duckBestScore") || 0);
+      bestScoreEl.textContent = best;
+    }
+
+    function saveBestScore() {
+      const best = Number(localStorage.getItem("duckBestScore") || 0);
+      if (score > best) {
+        localStorage.setItem("duckBestScore", score);
+      }
+      updateBestScore();
+    }
+
+    function resetDuckPosition() {
+      duckX = duckGame.clientWidth / 2;
+      duck.style.left = duckX + "px";
+    }
+
+    function clearFallingItems() {
+      items.forEach(item => item.el.remove());
+      items = [];
+    }
+
+    function spawnItem() {
+      if (!gameRunning) return;
+
+      const el = document.createElement("div");
+      el.className = "falling-item";
+      el.textContent = "🥖";
+
+      const minX = 20;
+      const maxX = duckGame.clientWidth - 50;
+      const x = Math.random() * (maxX - minX) + minX;
+      const speed = 2.6 + Math.random() * 1.8;
+
+      el.style.left = x + "px";
+      el.style.top = "-40px";
+
+      duckGame.appendChild(el);
+      items.push({
+        el,
+        x,
+        y: -40,
+        speed,
+        width: 34,
+        height: 34
+      });
+    }
+
+    function updateGame() {
+      if (!gameRunning) return;
+
+      const gameWidth = duckGame.clientWidth;
+      const duckWidth = 52;
+      const duckY = duckGame.clientHeight - 74 - 52;
+
+      if (moveLeft) duckX -= 6;
+      if (moveRight) duckX += 6;
+
+      if (duckX < 26) duckX = 26;
+      if (duckX > gameWidth - 26) duckX = gameWidth - 26;
+
+      duck.style.left = duckX + "px";
+
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        item.y += item.speed;
+        item.el.style.top = item.y + "px";
+
+        const itemCenterX = item.x + item.width / 2;
+        const itemBottomY = item.y + item.height;
+
+        const duckLeft = duckX - 28;
+        const duckRight = duckX + 28;
+        const duckTop = duckY;
+        const duckBottom = duckY + 52;
+
+        const caught =
+          itemCenterX > duckLeft &&
+          itemCenterX < duckRight &&
+          itemBottomY > duckTop &&
+          item.y < duckBottom;
+
+        if (caught) {
+          item.el.remove();
+          items.splice(i, 1);
+          score++;
+          scoreEl.textContent = score;
+          continue;
+        }
+
+        if (item.y > duckGame.clientHeight - 80) {
+          item.el.remove();
+          items.splice(i, 1);
+          misses++;
+          missesEl.textContent = misses;
+
+          if (misses >= 3) {
+            endDuckGame();
+            return;
+          }
+        }
+      }
+
+      duckGameLoop = requestAnimationFrame(updateGame);
+    }
+
+    function startDuckGame() {
+      stopDuckGame(false);
+
+      score = 0;
+      misses = 0;
+      gameRunning = true;
+      scoreEl.textContent = "0";
+      missesEl.textContent = "0";
+      finalScoreEl.textContent = "0";
+      gameOverBox.classList.remove("show");
+      clearFallingItems();
+      resetDuckPosition();
+      updateBestScore();
+
+      spawnLoop = setInterval(spawnItem, 950);
+      duckGameLoop = requestAnimationFrame(updateGame);
+    }
+
+    function endDuckGame() {
+      gameRunning = false;
+      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+      duckGameLoop = null;
+      spawnLoop = null;
+      finalScoreEl.textContent = score;
+      saveBestScore();
+      gameOverBox.classList.add("show");
+    }
+
+    function stopDuckGame(hideGameOver = true) {
+      gameRunning = false;
+      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+      duckGameLoop = null;
+      spawnLoop = null;
+      clearFallingItems();
+      if (hideGameOver) {
+        gameOverBox.classList.remove("show");
+      }
+    }
+
+    function openGameModal() {
+      gameModal.classList.add("show");
+      updateBestScore();
+      setTimeout(() => {
+        resetDuckPosition();
+      }, 50);
+    }
+
+    function closeGameModal() {
+      gameModal.classList.remove("show");
+      stopDuckGame();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (!gameModal.classList.contains("show")) return;
+
+      if (e.key === "ArrowLeft") {
+        moveRight = true;
+      }
+      if (e.key === "ArrowRight") {
+        moveLeft = true;
+      }
+      if (e.key === "Escape") {
+        closeGameModal();
+      }
+    });
+
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "ArrowLeft") {
+        moveRight = false;
+      }
+      if (e.key === "ArrowRight") {
+        moveLeft = false;
+      }
+    });
+
+    duckGame.addEventListener("touchstart", handleTouchMove, { passive: false });
+    duckGame.addEventListener("touchmove", handleTouchMove, { passive: false });
+    duckGame.addEventListener("click", handleClickMove);
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const rect = duckGame.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      duckX = x;
+      duck.style.left = duckX + "px";
+    }
+
+    function handleClickMove(e) {
+      const rect = duckGame.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      duckX = x;
+      duck.style.left = duckX + "px";
+    }
+
+    gameModal.addEventListener("click", (e) => {
+      if (e.target === gameModal) {
+        closeGameModal();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (gameModal.classList.contains("show")) {
+        resetDuckPosition();
+      }
+    });
+
+    createStars();
+    runTypewriters(document.getElementById("page1"));
+    updateBestScore();
+  </script>
+</body>
+</html>
