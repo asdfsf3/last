@@ -589,9 +589,11 @@
       }
 
      .duck-game {
-  height: 500px;
-  max-width: 100%;
+  width: 100%;
+  max-width: none;
+  height: 420px;
 }
+
 
       .duck {
         font-size: 46px;
@@ -613,11 +615,11 @@
       }
 
      .game-panel {
-  width: 96vw;
-  margin: 8px 0 18px;
-  padding: 20px 16px;
-  max-height: calc(100vh - 16px);
-  border-radius: 24px;
+  width: 99vw;
+  margin: 6px 0 16px;
+  padding: 18px 10px;
+  max-height: calc(100vh - 12px);
+  border-radius: 22px;
 }
 
       .game-close {
@@ -941,146 +943,147 @@
       items = [];
     }
 
-    function spawnItem() {
-      if (!gameRunning) return;
+    function spawnItem() { 
+  if (!gameRunning) return;
 
-      const rand = Math.random();
-      let type = "bread";
-      let symbol = "🥖";
+  const rand = Math.random();
+  let type = "bread";
+  let symbol = "🥖";
 
-      if (rand < 0.15) {
-        type = "bomb";
-        symbol = "💣";
-      } else if (rand < 0.30) {
-        type = "heart";
-        symbol = "❤️";
+  if (rand < 0.15) {
+    type = "bomb";
+    symbol = "💣";
+  } else if (rand < 0.30) {
+    type = "heart";
+    symbol = "❤️";
+  }
+
+  const el = document.createElement("div");
+  el.className = "falling-item";
+  el.textContent = symbol;
+
+  const gameWidth = duckGame.clientWidth || 320;
+  const minX = 20;
+  const maxX = Math.max(60, gameWidth - 50);
+  const x = Math.random() * (maxX - minX) + minX;
+
+  /* هنا غيرت: سرعة تعتمد على السكور لكن بسقف ثابت */
+  difficulty = Math.min(2.4, 1 + (score * 0.04));
+
+  const speed =
+    type === "bomb" ? (1.4 + Math.random() * 0.5) * difficulty :
+    type === "heart" ? (1.2 + Math.random() * 0.35) * difficulty :
+    (1.3 + Math.random() * 0.55) * difficulty;
+
+  el.style.left = x + "px";
+  el.style.top = "-40px";
+
+  duckGame.appendChild(el);
+
+  items.push({
+    el,
+    type,
+    x,
+    y: -40,
+    speed,
+    width: 34,
+    height: 34
+  });
+}
+
+function updateGame() {
+  if (!gameRunning) return;
+
+  const gameWidth = duckGame.clientWidth || 320;
+  const gameHeight = duckGame.clientHeight || 420;
+  const duckY = gameHeight - 74 - 52;
+
+  if (moveLeft) duckX -= 6;
+  if (moveRight) duckX += 6;
+
+  if (duckX < 26) duckX = 26;
+  if (duckX > gameWidth - 26) duckX = gameWidth - 26;
+
+  duck.style.left = duckX + "px";
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+
+    item.y += item.speed;
+    item.el.style.top = item.y + "px";
+
+    const itemCenterX = item.x + item.width / 2;
+    const itemBottomY = item.y + item.height;
+
+    const duckLeft = duckX - 28;
+    const duckRight = duckX + 28;
+    const duckTop = duckY;
+    const duckBottom = duckY + 52;
+
+    const caught =
+      itemCenterX > duckLeft &&
+      itemCenterX < duckRight &&
+      itemBottomY > duckTop &&
+      item.y < duckBottom;
+
+    if (caught) {
+      item.el.remove();
+      items.splice(i, 1);
+
+      if (item.type === "bread") {
+        score++;
+        scoreEl.textContent = score;
+      } else if (item.type === "heart") {
+        if (misses > 0) {
+          misses--;
+          missesEl.textContent = misses;
+        }
+      } else if (item.type === "bomb") {
+        endDuckGame();
+        return;
       }
 
-      const el = document.createElement("div");
-      el.className = "falling-item";
-      el.textContent = symbol;
-
-      const minX = 20;
-      const maxX = duckGame.clientWidth - 50;
-      const x = Math.random() * (maxX - minX) + minX;
-
-      // هنا غيرت: سرعة تعتمد على السكور
-difficulty = Math.min(2.6, 1 + (score * 0.04));
-
-const speed =
-  type === "bomb" ? (1.4 + Math.random() * 0.5) * difficulty :
-  type === "heart" ? (1.25 + Math.random() * 0.35) * difficulty :
-  (1.35 + Math.random() * 0.55) * difficulty;
-
-      el.style.left = x + "px";
-      el.style.top = "-40px";
-
-      duckGame.appendChild(el);
-
-      items.push({
-        el,
-        type,
-        x,
-        y: -40,
-        speed,
-        width: 34,
-        height: 34
-      });
+      continue;
     }
 
-    function updateGame() {
-      if (!gameRunning) return;
+    if (item.y > gameHeight - 80) {
+      item.el.remove();
+      items.splice(i, 1);
 
-      const gameWidth = duckGame.clientWidth;
-      const duckY = duckGame.clientHeight - 74 - 52;
+      /* هنا غيرت: فقط الخبزة إذا طاحت تزيد الفاقد */
+      if (item.type === "bread") {
+        misses++;
+        missesEl.textContent = misses;
 
-      if (moveLeft) duckX -= 6;
-      if (moveRight) duckX += 6;
-
-      if (duckX < 26) duckX = 26;
-      if (duckX > gameWidth - 26) duckX = gameWidth - 26;
-
-      duck.style.left = duckX + "px";
-
-      for (let i = items.length - 1; i >= 0; i--) {
-        const item = items[i];
-        item.y += item.speed;
-        item.el.style.top = item.y + "px";
-
-        const itemCenterX = item.x + item.width / 2;
-        const itemBottomY = item.y + item.height;
-
-        const duckLeft = duckX - 28;
-        const duckRight = duckX + 28;
-        const duckTop = duckY;
-        const duckBottom = duckY + 52;
-
-        const caught =
-          itemCenterX > duckLeft &&
-          itemCenterX < duckRight &&
-          itemBottomY > duckTop &&
-          item.y < duckBottom;
-
-        if (caught) {
-          item.el.remove();
-          items.splice(i, 1);
-
-          if (item.type === "bread") {
-            score++;
-            scoreEl.textContent = score;
-          } else if (item.type === "heart") {
-            if (misses > 0) {
-              misses--;
-              missesEl.textContent = misses;
-            }
-          } else if (item.type === "bomb") {
-            endDuckGame();
-            return;
-          }
-
-          continue;
-        }
-
-        if (item.y > duckGame.clientHeight - 80) {
-          item.el.remove();
-          items.splice(i, 1);
-
-          if (item.type === "bread") {
-            misses++;
-            missesEl.textContent = misses;
-
-            if (misses >= 3) {
-              endDuckGame();
-              return;
-            }
-          }
+        if (misses >= 3) {
+          endDuckGame();
+          return;
         }
       }
-
-      duckGameLoop = requestAnimationFrame(updateGame);
     }
+  }
+
+  duckGameLoop = requestAnimationFrame(updateGame);
+}
 
     function startDuckGame() {
-      stopDuckGame(false);
+  stopDuckGame(false);
 
-      difficulty = 1;
-      score = 0;
-      misses = 0;
-      score = 0;
-      misses = 0;
-      difficulty = 1;
-      gameRunning = true;
-      scoreEl.textContent = "0";
-      missesEl.textContent = "0";
-      finalScoreEl.textContent = "0";
-      gameOverBox.classList.remove("show");
-      clearFallingItems();
-      resetDuckPosition();
-      updateBestScore();
+  score = 0;
+  misses = 0;
+  difficulty = 1;
+  gameRunning = true;
+  scoreEl.textContent = "0";
+  missesEl.textContent = "0";
+  finalScoreEl.textContent = "0";
+  gameOverBox.classList.remove("show");
+  clearFallingItems();
+  resetDuckPosition();
+  updateBestScore();
 
-     spawnLoop = setInterval(spawnItem, 950);
-
-    }
+  spawnLoop = setInterval(spawnItem, 1100);
+  duckGameLoop = requestAnimationFrame(updateGame);
+}
 
     function endDuckGame() {
       gameRunning = false;
