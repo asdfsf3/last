@@ -23,7 +23,6 @@
       --soft-border: rgba(255,255,255,0.12);
       --text-dim: rgba(255,255,255,0.82);
     }
-
     body {
       font-family: "Tahoma", Arial, sans-serif;
       background:
@@ -589,9 +588,10 @@
         border-radius: 18px;
       }
 
-      .duck-game {
-        height: 420px;
-      }
+     .duck-game {
+  height: 500px;
+  max-width: 100%;
+}
 
       .duck {
         font-size: 46px;
@@ -601,23 +601,24 @@
         font-size: 30px;
       }
 
-      .game-fab {
-        top: 14px;
-        left: 14px;
-        font-size: 14px;
-        padding: 10px 14px;
-        width: auto;
-      }
-
+     .game-fab {
+  top: 12px;
+  left: 12px;
+  font-size: 14px;
+  padding: 11px 15px;
+  width: auto;
+}
       .game-modal {
         padding: 12px;
       }
 
-      .game-panel {
-        margin: 12px 0 24px;
-        padding: 18px 14px;
-        max-height: calc(100vh - 24px);
-      }
+     .game-panel {
+  width: 96vw;
+  margin: 8px 0 18px;
+  padding: 20px 16px;
+  max-height: calc(100vh - 16px);
+  border-radius: 24px;
+}
 
       .game-close {
         width: auto;
@@ -742,7 +743,6 @@
     </section>
 
   </div>
-
   <div class="game-modal" id="gameModal">
     <div class="game-panel">
       <div class="game-topbar">
@@ -916,6 +916,7 @@
     let items = [];
     let moveLeft = false;
     let moveRight = false;
+    let difficulty = 1;
 
     function updateBestScore() {
       const best = Number(localStorage.getItem("duckBestScore") || 0);
@@ -963,10 +964,13 @@
       const maxX = duckGame.clientWidth - 50;
       const x = Math.random() * (maxX - minX) + minX;
 
-      const speed =
-        type === "bomb" ? (1.8 + Math.random() * 0.8) :
-        type === "heart" ? (1.6 + Math.random() * 0.7) :
-        (1.7 + Math.random() * 0.6);
+      // هنا غيرت: سرعة تعتمد على السكور
+difficulty = Math.min(2.6, 1 + (score * 0.04));
+
+const speed =
+  type === "bomb" ? (1.4 + Math.random() * 0.5) * difficulty :
+  type === "heart" ? (1.25 + Math.random() * 0.35) * difficulty :
+  (1.35 + Math.random() * 0.55) * difficulty;
 
       el.style.left = x + "px";
       el.style.top = "-40px";
@@ -1059,8 +1063,12 @@
     function startDuckGame() {
       stopDuckGame(false);
 
+      difficulty = 1;
       score = 0;
       misses = 0;
+      score = 0;
+      misses = 0;
+      difficulty = 1;
       gameRunning = true;
       scoreEl.textContent = "0";
       missesEl.textContent = "0";
@@ -1070,9 +1078,8 @@
       resetDuckPosition();
       updateBestScore();
 
-      spawnLoop = setInterval(spawnItem, 950
-      );
-      duckGameLoop = requestAnimationFrame(updateGame);
+     spawnLoop = setInterval(spawnItem, 950);
+
     }
 
     function endDuckGame() {
