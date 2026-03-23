@@ -22,6 +22,7 @@ export default async function handler(req, res) {
     const parsed = parseUserAgent(ua);
 
     const content = [
+          " **-------------------------------------------------------**",
       "📥 **New Visit**",
       `⏰ **Client Time:** ${clientTime}`,
       `🖥 **Server Time:** ${serverTime}`,
