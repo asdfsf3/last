@@ -1,7 +1,6 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, message: "Method not allowed" });
-  }
+export default function handler(req, res) {
+  return res.status(200).json({ ok: true, route: "visit works" });
+}
 
   try {
     const body =
@@ -61,7 +60,7 @@ const clientTime = body.time || serverTime;
       error: error.message
     });
   }
-}
+
 
 function parseUserAgent(ua) {
   const lower = ua.toLowerCase();
