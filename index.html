@@ -849,10 +849,11 @@
 
       <div class="game-card">
         <div class="game-info">
-          <div class="game-badge">النقاط: <span id="score">0</span></div>
-          <div class="game-badge">الواكع: <span id="misses">0</span> / 3</div>
-          <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
-        </div>
+  <div class="game-badge">النقاط: <span id="score">0</span></div>
+  <div class="game-badge">الواكع: <span id="misses">0</span> / 3</div>
+  <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
+  <div class="game-badge">عدد الفوزات: <span id="winsCount">0</span></div>
+</div>
 
         <div class="level-bar-wrap">
           <div class="level-bar-top">
@@ -869,11 +870,10 @@
           <div class="duck-ground"></div>
 
           <div class="game-over-box" id="gameOverBox">
-            <h3>خسرت 🥲</h3>
-            <p>نتيجتك: <span id="finalScore">0</span></p>
-            <button id="restartBtn" type="button">إعادة اللعب</button>
-          </div>
-        </div>
+  <h3 id="gameResultTitle">خسرت 🥲</h3>
+  <p id="gameResultText">نتيجتك: <span id="finalScore">0</span></p>
+  <button id="restartBtn" type="button">إعادة اللعب</button>
+</div>
 
         <div class="mobile-hint">
           على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
@@ -1100,6 +1100,9 @@
     const levelBarFillEl = document.getElementById("levelBarFill");
     const startBtn = document.getElementById("startBtn");
     const restartBtn = document.getElementById("restartBtn");
+    const winsCountEl = document.getElementById("winsCount");
+    const gameResultTitle = document.getElementById("gameResultTitle");
+    const gameResultText = document.getElementById("gameResultText");
 
     let duckGameLoop = null;
     let spawnLoop = null;
@@ -1112,6 +1115,22 @@
     let moveRight = false;
     let difficulty = 1;
     let level = 1;
+
+  function winDuckGame() {
+  gameRunning = false;
+  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+  if (spawnLoop) clearInterval(spawnLoop);
+  duckGameLoop = null;
+  spawnLoop = null;
+
+  finalScoreEl.textContent = score;
+  saveBestScore();
+  addWin();
+
+  gameResultTitle.textContent = "فزت 🎉";
+  gameResultText.innerHTML = `جبت <span id="finalScore">${score}</span> نقطة ووصلت للهدف!`;
+  gameOverBox.classList.add("show");
+}
 
     function getLevelInfo(currentScore) {
       if (currentScore < 25) {
@@ -1293,22 +1312,19 @@
           items.splice(i, 1);
 
           if (item.type === "bread") {
-            const oldLevel = getLevelInfo(score).level;
-            score++;
-            scoreEl.textContent = score;
-            updateLevelUI();
+  const oldLevel = getLevelInfo(score).level;
+  score++;
+  scoreEl.textContent = score;
+  updateLevelUI();
 
-            const newLevel = getLevelInfo(score).level;
-            if (newLevel > oldLevel) showLevelUp();
-          } else if (item.type === "heart") {
-            if (misses > 0) {
-              misses--;
-              missesEl.textContent = misses;
-            }
-          } else if (item.type === "bomb") {
-            endDuckGame();
-            return;
-          }
+  const newLevel = getLevelInfo(score).level;
+  if (newLevel > oldLevel) showLevelUp();
+
+  if (score >= 60) {
+    winDuckGame();
+    return;
+  }
+}
 
           continue;
         }
@@ -1332,36 +1348,42 @@
     }
 
     function startDuckGame() {
-      stopDuckGame(false);
+  stopDuckGame(false);
 
-      score = 0;
-      misses = 0;
-      difficulty = 1;
-      level = 1;
-      gameRunning = true;
-      scoreEl.textContent = "0";
-      missesEl.textContent = "0";
-      finalScoreEl.textContent = "0";
-      gameOverBox.classList.remove("show");
-      clearFallingItems();
-      resetDuckPosition();
-      updateBestScore();
-      updateLevelUI();
+  score = 0;
+  misses = 0;
+  difficulty = 1;
+  level = 1;
+  gameRunning = true;
+  scoreEl.textContent = "0";
+  missesEl.textContent = "0";
+  finalScoreEl.textContent = "0";
+  gameResultTitle.textContent = "خسرت 🥲";
+  gameResultText.innerHTML = `نتيجتك: <span id="finalScore">0</span>`;
+  gameOverBox.classList.remove("show");
+  clearFallingItems();
+  resetDuckPosition();
+  updateBestScore();
+  updateWinsCount();
+  updateLevelUI();
 
-      spawnLoop = setInterval(spawnItem, 850);
-      duckGameLoop = requestAnimationFrame(updateGame);
-    }
-
+  spawnLoop = setInterval(spawnItem, 850);
+  duckGameLoop = requestAnimationFrame(updateGame);
+}
     function endDuckGame() {
-      gameRunning = false;
-      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
-      if (spawnLoop) clearInterval(spawnLoop);
-      duckGameLoop = null;
-      spawnLoop = null;
-      finalScoreEl.textContent = score;
-      saveBestScore();
-      gameOverBox.classList.add("show");
-    }
+  gameRunning = false;
+  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+  if (spawnLoop) clearInterval(spawnLoop);
+  duckGameLoop = null;
+  spawnLoop = null;
+
+  finalScoreEl.textContent = score;
+  saveBestScore();
+
+  gameResultTitle.textContent = "خسرت 🥲";
+  gameResultText.innerHTML = `نتيجتك: <span id="finalScore">${score}</span>`;
+  gameOverBox.classList.add("show");
+}
 
     function stopDuckGame(hideGameOver = true) {
       gameRunning = false;
