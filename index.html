@@ -6,6 +6,68 @@
   <title>تهنئة خاصة لنونو</title>
 
   <style>
+    /* هنا غيرت: تأثير الاقتباس */
+.quote-box {
+  margin-top: 14px;
+  font-size: 18px;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: 0.35s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.quote-box.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Glow قوي */
+.quote-glow {
+  text-shadow:
+    0 0 10px #fff,
+    0 0 20px #8d6bff,
+    0 0 30px #ff72c8;
+}
+
+/* اهتزاز خفيف */
+@keyframes quoteShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-1px); }
+  100% { transform: translateX(0); }
+}
+
+.quote-shake {
+  animation: quoteShake 0.4s ease;
+}
+
+/* قلوب تطلع */
+.quote-heart {
+  position: fixed;
+  bottom: 40%;
+  left: 50%;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: heartFloat 1.6s ease forwards;
+}
+
+@keyframes heartFloat {
+  0% {
+    transform: translate(-50%, 0) scale(0.6);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -120px) scale(1.4);
+    opacity: 0;
+  }
+}
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -636,6 +698,11 @@
       <div class="icon">💌</div>
       <h1>هذي المفاجأة إلج يا نونو</h1>
       <p class="typewriter" data-text="سويت هالموقع حتى أوصل لج شي حلو ومرتب من كلبي، هسه دوسي هذا الزر.↓"></p>
+      <!-- هنا غيرت: زر الاقتباس -->
+<div style="margin-top:20px;">
+  <button onclick="showQuote()">اقتباس 💭</button>
+  <p id="quoteText" class="quote-box"></p>
+</div>
       <div class="btns">
         <button onclick="goToPage(2, this, true)">افتحي التهنئة <span class="arrow">←</span></button>
       </div>
@@ -1264,6 +1331,44 @@
     runTypewriters(document.getElementById("page1"));
     updateBestScore();
     updateLevelUI();
+
+    // هنا غيرت: دالة الاقتباس
+function showQuote() {
+  const random = Math.floor(Math.random() * quotes.length);
+  const el = document.getElementById("quoteText");
+
+  el.textContent = quotes[random];
+
+  el.classList.remove("show", "quote-glow", "quote-shake");
+  void el.offsetWidth;
+
+  el.classList.add("show", "quote-glow", "quote-shake");
+
+  // قلوب تطلع
+  for (let i = 0; i < 6; i++) {
+    const heart = document.createElement("div");
+    heart.className = "quote-heart";
+    heart.textContent = "💗";
+
+    heart.style.left = (45 + Math.random() * 10) + "%";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 1600);
+  }
+}
+const quotes = [
+  "مو لأن الدنيا حلوة، بس لأنج بيها.",
+  "انتي مو صدفة، انتي الشي الوحيد الي تمنيت يطول.",
+  "مو اشتاق لج، اشتاق لنفسي وانا وياج.",
+  "كلشي يتعوض إلا احساسج.",
+  "انتي مو بس شخص، انتي راحة.",
+  "اكو ناس تنحب، وانتي تنعاش بيج.",
+  "مو مهم شكد الدنيا تتغير، المهم انتي تبقين . ",
+"انتي الراحة اللي تجي بدون موعد.",
+"أنتِ البداية اللي ما أريد بعدها نهاية",
+"شمك بالهوى، بس ما أرتوي",
+]
   </script>
 </body>
 </html>
