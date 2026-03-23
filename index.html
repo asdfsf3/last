@@ -712,6 +712,80 @@
         max-width: 100%;
       }
     }
+    #page6 {
+  justify-content: flex-start;
+}
+
+#page6 .game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-footer {
+  width: 100%;
+  max-width: 700px;
+  margin: 16px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.game-close-bar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.game-close-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 24px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-hint {
+  margin-top: 0;
+}
+
+.game-actions {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-actions button {
+  min-width: 170px;
+}
+
+@media (max-width: 600px) {
+  .game-footer {
+    gap: 12px;
+  }
+
+  .game-actions {
+    flex-direction: column;
+  }
+
+  .game-actions button,
+  .game-close-btn {
+    width: 100%;
+  }
+
+  .game-close-btn {
+    border-radius: 999px;
+    height: auto;
+    padding: 14px 26px;
+    font-size: 18px;
+  }
+}
   </style>
 </head>
 <body>
@@ -887,14 +961,19 @@
   <button id="restartBtn" type="button">إعادة اللعب</button>
 </div>
 
-        <div class="mobile-hint">
-  على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
-  على الكمبيوتر: استخدم الأسهم يمين ويسار.
-</div>
+        <div class="game-footer">
+  <div class="mobile-hint">
+    على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
+    على الكمبيوتر: استخدم الأسهم يمين ويسار.
+  </div>
 
-<div class="btns" style="margin-top:16px;">
-  <button id="startBtn" type="button" onclick="startDuckGame()">ابدأ اللعبة</button>
-  <button class="secondary" onclick="goBack(5)">رجوع</button>
+  <div class="game-actions">
+    <button id="startBtn" type="button">ابدأ اللعبة</button>
+  </div>
+
+  <div class="game-close-bar">
+    <button class="secondary game-close-btn" type="button" onclick="closeDuckGame()">×</button>
+  </div>
 </div>
       </div>
 
@@ -1029,6 +1108,11 @@
       }, 220);
     }
 
+function closeDuckGame() {
+  stopDuckGame();
+  goToPage(5, null, false);
+}
+
     function goBack(pageNumber) {
       const currentPage = document.querySelector(".page.active");
       if (currentPage) currentPage.classList.remove("active");
@@ -1134,7 +1218,8 @@
   if (spawnLoop) clearInterval(spawnLoop);
   duckGameLoop = null;
   spawnLoop = null;
-startBtn.style.display = "block";
+
+  startBtn.style.display = "block";
   finalScoreEl.textContent = score;
   saveBestScore();
   addWin();
@@ -1372,8 +1457,6 @@ startBtn.style.display = "block";
   missesEl.textContent = "0";
 
   gameOverBox.classList.remove("show");
-
-  // اخفاء زر البداية أثناء اللعب
   startBtn.style.display = "none";
 
   clearFallingItems();
@@ -1391,7 +1474,8 @@ startBtn.style.display = "block";
   if (spawnLoop) clearInterval(spawnLoop);
   duckGameLoop = null;
   spawnLoop = null;
-startBtn.style.display = "none";
+
+  startBtn.style.display = "block";
   finalScoreEl.textContent = score;
   saveBestScore();
 
@@ -1401,17 +1485,19 @@ startBtn.style.display = "none";
 }
 
     function stopDuckGame(hideGameOver = true) {
-      gameRunning = false;
-      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
-      if (spawnLoop) clearInterval(spawnLoop);
-      duckGameLoop = null;
-      spawnLoop = null;
-      clearFallingItems();
-      if (hideGameOver) {
-        gameOverBox.classList.remove("show");
-      }
-    }
+  gameRunning = false;
+  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+  if (spawnLoop) clearInterval(spawnLoop);
+  duckGameLoop = null;
+  spawnLoop = null;
+  clearFallingItems();
 
+  startBtn.style.display = "block";
+
+  if (hideGameOver) {
+    gameOverBox.classList.remove("show");
+  }
+}
     document.addEventListener("keydown", (e) => {
       const gamePage = document.getElementById("page6");
       if (!gamePage.classList.contains("active")) return;
