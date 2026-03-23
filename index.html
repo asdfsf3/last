@@ -7,10 +7,9 @@
 
   <style>
 
-    #page6 {
-  justify-content: flex-start;
+ #page6 {
+  justify-content: center;
 }
-
 #page6 .game-card {
   margin-top: 18px;
 }
@@ -1135,7 +1134,7 @@
   if (spawnLoop) clearInterval(spawnLoop);
   duckGameLoop = null;
   spawnLoop = null;
-
+startBtn.style.display = "block";
   finalScoreEl.textContent = score;
   saveBestScore();
   addWin();
@@ -1368,14 +1367,15 @@
   difficulty = 1;
   level = 1;
   gameRunning = true;
+
   scoreEl.textContent = "0";
   missesEl.textContent = "0";
-  finalScoreEl.textContent = "0";
-  gameResultTitle.textContent = "خسرت 🥲";
-  gameResultText.innerHTML = `نتيجتك: <span id="finalScore">0</span>`;
+
   gameOverBox.classList.remove("show");
+
+  // اخفاء زر البداية أثناء اللعب
   startBtn.style.display = "none";
-  startBtn.style.display = "block";
+
   clearFallingItems();
   resetDuckPosition();
   updateBestScore();
@@ -1391,7 +1391,7 @@
   if (spawnLoop) clearInterval(spawnLoop);
   duckGameLoop = null;
   spawnLoop = null;
-
+startBtn.style.display = "block";
   finalScoreEl.textContent = score;
   saveBestScore();
 
@@ -1467,6 +1467,23 @@
       }
     });
 
+    function getWins() {
+  return Number(localStorage.getItem("duckWins") || 0);
+}
+
+function addWin() {
+  const wins = getWins() + 1;
+  localStorage.setItem("duckWins", wins);
+  updateWinsCount();
+}
+
+function updateWinsCount() {
+  if (winsCountEl) {
+    winsCountEl.textContent = getWins();
+  }
+}
+
+updateWinsCount();
     createStars();
 runTypewriters(document.getElementById("page1"));
 updateBestScore();
