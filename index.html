@@ -1519,6 +1519,40 @@ function closeDuckGame() {
     }, 10000); // كل 10 ثواني
 
 
+  //-----------------------------------------------------------------------------------------------------------------------//
+  
+  function sendVisitAnalytics() {
+    const noticeKey = "visit_sent_" + location.pathname;
+    const alreadySent = sessionStorage.getItem(noticeKey);
+
+    if (alreadySent) return;
+
+    const payload = {
+      page: location.pathname + location.search + location.hash,
+      time: new Date().toLocaleString("en-GB", {
+        hour12: false
+      })
+    };
+
+    fetch("/api/visit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Visit sent:", data);
+        sessionStorage.setItem(noticeKey, "1");
+      })
+      .catch((err) => console.error("Visit tracking failed:", err));
+  }
+
+  // ينفذ بعد ما الصفحة تفتح
+  window.addEventListener("load", sendVisitAnalytics);
+  
+
   </script>
 </body>
 </html>
