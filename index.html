@@ -924,19 +924,15 @@
   if (!el) return;
 
   const target = calculateDaysTogether();
-  let current = 0;
-
   const duration = 1400;
   const startTime = performance.now();
 
   function step(now) {
     const progress = Math.min((now - startTime) / duration, 1);
-
-    // ease-out يخلي البداية سريعة وبعدين يهدأ
     const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(target * eased);
 
-    current = Math.floor(target * eased);
-   el.textContent = `✨ ${current} يوم وانتِ وياي ✨`;
+    el.textContent = `✨ ${current} يوم وانتِ وياي ✨`;
 
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -947,7 +943,6 @@
 
   requestAnimationFrame(step);
 }
-
     function showQuote() {
       const random = Math.floor(Math.random() * quotes.length);
       const el = document.getElementById("quoteText");
@@ -969,6 +964,14 @@
         setTimeout(() => p.remove(), 1400);
       }
     }
+
+    function updateDaysSilent() {
+  const el = document.getElementById("daysTogetherBar");
+  if (!el) return;
+
+  const days = calculateDaysTogether();
+  el.textContent = `صارلنه ${days} يوم سوا ✨`;
+}
 
     function createConfetti() {
       const colors = ["#ff72c8", "#8d6bff", "#6ea8ff", "#ffffff", "#a98dff"];
@@ -1423,10 +1426,18 @@
     });
 
     createStars();
-    runTypewriters(document.getElementById("page1"));
-    updateBestScore();
-    updateLevelUI();
-    animateDaysTogetherBar();
+runTypewriters(document.getElementById("page1"));
+updateBestScore();
+updateLevelUI();
+
+// أول مرة: أنيميشن
+animateDaysTogetherBar();
+
+// بعدها: تحديث بدون أنيميشن
+setInterval(() => {
+  animateDaysTogetherBar();
+}, 10000); // كل 10 ثواني
+
   </script>
 </body>
 </html>
