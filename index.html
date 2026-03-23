@@ -6,6 +6,19 @@
   <title>تهنئة خاصة لنونو</title>
 
   <style>
+
+    #page6 {
+  justify-content: flex-start;
+}
+
+#page6 .game-card {
+  margin-top: 18px;
+}
+
+#page6 .btns {
+  margin-top: 18px;
+}
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -876,14 +889,14 @@
 </div>
 
         <div class="mobile-hint">
-          على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
-          على الكمبيوتر: استخدم الأسهم يمين ويسار.
-        </div>
+  على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
+  على الكمبيوتر: استخدم الأسهم يمين ويسار.
+</div>
 
-        <div class="btns" style="margin-top:16px;">
-          <button id="startBtn" type="button">ابدأ اللعبة</button>
-          <button class="secondary" onclick="goBack(5)">رجوع</button>
-        </div>
+<div class="btns" style="margin-top:16px;">
+  <button id="startBtn" type="button" onclick="startDuckGame()">ابدأ اللعبة</button>
+  <button class="secondary" onclick="goBack(5)">رجوع</button>
+</div>
       </div>
 
       <div class="dots">
@@ -1361,6 +1374,8 @@
   gameResultTitle.textContent = "خسرت 🥲";
   gameResultText.innerHTML = `نتيجتك: <span id="finalScore">0</span>`;
   gameOverBox.classList.remove("show");
+  startBtn.style.display = "none";
+  startBtn.style.display = "block";
   clearFallingItems();
   resetDuckPosition();
   updateBestScore();
@@ -1438,8 +1453,13 @@
       duck.style.left = duckX + "px";
     }
 
-    startBtn.addEventListener("click", startDuckGame);
-    restartBtn.addEventListener("click", startDuckGame);
+    document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+
+  if (startBtn) startBtn.addEventListener("click", startDuckGame);
+  if (restartBtn) restartBtn.addEventListener("click", startDuckGame);
+});
 
     window.addEventListener("resize", () => {
       if (document.getElementById("page6").classList.contains("active")) {
