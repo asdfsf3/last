@@ -6,19 +6,7 @@
   <title>تهنئة خاصة لنونو</title>
 
   <style>
-
- #page6 {
-  justify-content: center;
-}
-#page6 .game-card {
-  margin-top: 18px;
-}
-
-#page6 .btns {
-  margin-top: 18px;
-}
-
-    * {
+* {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -712,80 +700,6 @@
         max-width: 100%;
       }
     }
-    #page6 {
-  justify-content: flex-start;
-}
-
-#page6 .game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.game-footer {
-  width: 100%;
-  max-width: 700px;
-  margin: 16px auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.game-close-bar {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.game-close-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  padding: 0;
-  font-size: 24px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mobile-hint {
-  margin-top: 0;
-}
-
-.game-actions {
-  width: 100%;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.game-actions button {
-  min-width: 170px;
-}
-
-@media (max-width: 600px) {
-  .game-footer {
-    gap: 12px;
-  }
-
-  .game-actions {
-    flex-direction: column;
-  }
-
-  .game-actions button,
-  .game-close-btn {
-    width: 100%;
-  }
-
-  .game-close-btn {
-    border-radius: 999px;
-    height: auto;
-    padding: 14px 26px;
-    font-size: 18px;
-  }
-}
   </style>
 </head>
 <body>
@@ -935,11 +849,11 @@
 
       <div class="game-card">
         <div class="game-info">
-  <div class="game-badge">النقاط: <span id="score">0</span></div>
-  <div class="game-badge">الواكع: <span id="misses">0</span> / 3</div>
-  <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
-  <div class="game-badge">عدد الفوزات: <span id="winsCount">0</span></div>
-</div>
+          <div class="game-badge">النقاط: <span id="score">0</span></div>
+          <div class="game-badge">الواكع: <span id="misses">0</span> / 3</div>
+          <div class="game-badge">أفضل نتيجة: <span id="bestScore">0</span></div>
+          <div class="game-badge">عدد الفوزات: <span id="winsCount">0</span></div>
+        </div>
 
         <div class="level-bar-wrap">
           <div class="level-bar-top">
@@ -956,25 +870,27 @@
           <div class="duck-ground"></div>
 
           <div class="game-over-box" id="gameOverBox">
-  <h3 id="gameResultTitle">خسرت 🥲</h3>
-  <p id="gameResultText">نتيجتك: <span id="finalScore">0</span></p>
-  <button id="restartBtn" type="button">إعادة اللعب</button>
-</div>
+            <h3 id="gameResultTitle">خسرت 🥲</h3>
+            <p id="gameResultText">نتيجتك: <span id="finalScore">0</span></p>
+            <button id="restartBtn" type="button">إعادة اللعب</button>
+          </div>
+        </div>
 
         <div class="game-footer">
-  <div class="mobile-hint">
-    على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
-    على الكمبيوتر: استخدم الأسهم يمين ويسار.
-  </div>
+          <div class="mobile-hint">
+            على التلفون: اسحب داخل اللعبة يمين ويسار. <br>
+            على الكمبيوتر: استخدم الأسهم يمين ويسار.
+          </div>
 
-  <div class="game-actions">
-    <button id="startBtn" type="button">ابدأ اللعبة</button>
-  </div>
+          <div class="game-actions">
+            <button id="startBtn" type="button">ابدأ اللعبة</button>
+            <button class="secondary" type="button" onclick="goBack(5)">رجوع</button>
+          </div>
 
-  <div class="game-close-bar">
-    <button class="secondary game-close-btn" type="button" onclick="closeDuckGame()">×</button>
-  </div>
-</div>
+          <div class="game-close-bar">
+            <button class="secondary game-close-btn" type="button" onclick="closeDuckGame()">×</button>
+          </div>
+        </div>
       </div>
 
       <div class="dots">
@@ -1109,9 +1025,9 @@
     }
 
 function closeDuckGame() {
-  stopDuckGame();
-  goToPage(5, null, false);
-}
+      stopDuckGame();
+      goToPage(5, null, false);
+    }
 
     function goBack(pageNumber) {
       const currentPage = document.querySelector(".page.active");
@@ -1212,23 +1128,6 @@ function closeDuckGame() {
     let difficulty = 1;
     let level = 1;
 
-  function winDuckGame() {
-  gameRunning = false;
-  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
-  if (spawnLoop) clearInterval(spawnLoop);
-  duckGameLoop = null;
-  spawnLoop = null;
-
-  startBtn.style.display = "block";
-  finalScoreEl.textContent = score;
-  saveBestScore();
-  addWin();
-
-  gameResultTitle.textContent = "فزت 🎉";
-  gameResultText.innerHTML = `جبت <span id="finalScore">${score}</span> نقطة ووصلت للهدف!`;
-  gameOverBox.classList.add("show");
-}
-
     function getLevelInfo(currentScore) {
       if (currentScore < 25) {
         return {
@@ -1286,6 +1185,22 @@ function closeDuckGame() {
       updateBestScore();
     }
 
+    function getWins() {
+      return Number(localStorage.getItem("duckWins") || 0);
+    }
+
+    function addWin() {
+      const wins = getWins() + 1;
+      localStorage.setItem("duckWins", wins);
+      updateWinsCount();
+    }
+
+    function updateWinsCount() {
+      if (winsCountEl) {
+        winsCountEl.textContent = getWins();
+      }
+    }
+
     function resetDuckPosition() {
       const gameWidth = duckGame.clientWidth || 320;
       duckX = gameWidth / 2;
@@ -1308,8 +1223,11 @@ function closeDuckGame() {
       if (!itemType) {
         const rand = Math.random();
         itemType = "bread";
-        if (rand < 0.12) itemType = "bomb";
-        else if (rand < 0.24) itemType = "heart";
+        if (rand < 0.12) {
+          itemType = "bomb";
+        } else if (rand < 0.24) {
+          itemType = "heart";
+        }
       }
 
       if (itemType === "bomb") symbol = "💣";
@@ -1370,6 +1288,60 @@ function closeDuckGame() {
       }
     }
 
+    function winDuckGame() {
+      gameRunning = false;
+      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+      duckGameLoop = null;
+      spawnLoop = null;
+
+      startBtn.style.display = "block";
+      finalScoreEl.textContent = score;
+      saveBestScore();
+      addWin();
+
+      gameResultTitle.textContent = "فزت 🎉";
+      gameResultText.innerHTML = `جبت <span id="finalScore">${score}</span> نقطة ووصلت للهدف!`;
+      gameOverBox.classList.add("show");
+    }
+
+    function endDuckGame(reason = "lose") {
+      gameRunning = false;
+      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+      duckGameLoop = null;
+      spawnLoop = null;
+
+      startBtn.style.display = "block";
+      finalScoreEl.textContent = score;
+      saveBestScore();
+
+      if (reason === "bomb") {
+        gameResultTitle.textContent = "انفجرت 💣";
+        gameResultText.innerHTML = `. نتيجتك: <span id="finalScore">${score}</span>`;
+      } else {
+        gameResultTitle.textContent = "خسرت 🥲";
+        gameResultText.innerHTML = `نتيجتك: <span id="finalScore">${score}</span>`;
+      }
+
+      gameOverBox.classList.add("show");
+    }
+
+    function stopDuckGame(hideGameOver = true) {
+      gameRunning = false;
+      if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+      duckGameLoop = null;
+      spawnLoop = null;
+      clearFallingItems();
+
+      startBtn.style.display = "block";
+
+      if (hideGameOver) {
+        gameOverBox.classList.remove("show");
+      }
+    }
+
     function updateGame() {
       if (!gameRunning) return;
 
@@ -1409,19 +1381,29 @@ function closeDuckGame() {
           items.splice(i, 1);
 
           if (item.type === "bread") {
-  const oldLevel = getLevelInfo(score).level;
-  score++;
-  scoreEl.textContent = score;
-  updateLevelUI();
+            const oldLevel = getLevelInfo(score).level;
+            score++;
+            scoreEl.textContent = score;
+            updateLevelUI();
 
-  const newLevel = getLevelInfo(score).level;
-  if (newLevel > oldLevel) showLevelUp();
+            const newLevel = getLevelInfo(score).level;
+            if (newLevel > oldLevel) {
+              showLevelUp();
+            }
 
-  if (score >= 60) {
-    winDuckGame();
-    return;
-  }
-}
+            if (score >= 60) {
+              winDuckGame();
+              return;
+            }
+          } else if (item.type === "heart") {
+            if (misses > 0) {
+              misses--;
+              missesEl.textContent = misses;
+            }
+          } else if (item.type === "bomb") {
+            endDuckGame("bomb");
+            return;
+          }
 
           continue;
         }
@@ -1445,59 +1427,31 @@ function closeDuckGame() {
     }
 
     function startDuckGame() {
-  stopDuckGame(false);
+      stopDuckGame(false);
 
-  score = 0;
-  misses = 0;
-  difficulty = 1;
-  level = 1;
-  gameRunning = true;
+      score = 0;
+      misses = 0;
+      difficulty = 1;
+      level = 1;
+      gameRunning = true;
 
-  scoreEl.textContent = "0";
-  missesEl.textContent = "0";
+      scoreEl.textContent = "0";
+      missesEl.textContent = "0";
+      finalScoreEl.textContent = "0";
 
-  gameOverBox.classList.remove("show");
-  startBtn.style.display = "none";
+      gameOverBox.classList.remove("show");
+      startBtn.style.display = "none";
 
-  clearFallingItems();
-  resetDuckPosition();
-  updateBestScore();
-  updateWinsCount();
-  updateLevelUI();
+      clearFallingItems();
+      resetDuckPosition();
+      updateBestScore();
+      updateWinsCount();
+      updateLevelUI();
 
-  spawnLoop = setInterval(spawnItem, 850);
-  duckGameLoop = requestAnimationFrame(updateGame);
-}
-    function endDuckGame() {
-  gameRunning = false;
-  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
-  if (spawnLoop) clearInterval(spawnLoop);
-  duckGameLoop = null;
-  spawnLoop = null;
+      spawnLoop = setInterval(spawnItem, 850);
+      duckGameLoop = requestAnimationFrame(updateGame);
+    }
 
-  startBtn.style.display = "block";
-  finalScoreEl.textContent = score;
-  saveBestScore();
-
-  gameResultTitle.textContent = "خسرت 🥲";
-  gameResultText.innerHTML = `نتيجتك: <span id="finalScore">${score}</span>`;
-  gameOverBox.classList.add("show");
-}
-
-    function stopDuckGame(hideGameOver = true) {
-  gameRunning = false;
-  if (duckGameLoop) cancelAnimationFrame(duckGameLoop);
-  if (spawnLoop) clearInterval(spawnLoop);
-  duckGameLoop = null;
-  spawnLoop = null;
-  clearFallingItems();
-
-  startBtn.style.display = "block";
-
-  if (hideGameOver) {
-    gameOverBox.classList.remove("show");
-  }
-}
     document.addEventListener("keydown", (e) => {
       const gamePage = document.getElementById("page6");
       if (!gamePage.classList.contains("active")) return;
@@ -1540,12 +1494,9 @@ function closeDuckGame() {
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-  const startBtn = document.getElementById("startBtn");
-  const restartBtn = document.getElementById("restartBtn");
-
-  if (startBtn) startBtn.addEventListener("click", startDuckGame);
-  if (restartBtn) restartBtn.addEventListener("click", startDuckGame);
-});
+      if (startBtn) startBtn.addEventListener("click", startDuckGame);
+      if (restartBtn) restartBtn.addEventListener("click", startDuckGame);
+    });
 
     window.addEventListener("resize", () => {
       if (document.getElementById("page6").classList.contains("active")) {
@@ -1553,35 +1504,20 @@ function closeDuckGame() {
       }
     });
 
-    function getWins() {
-  return Number(localStorage.getItem("duckWins") || 0);
-}
-
-function addWin() {
-  const wins = getWins() + 1;
-  localStorage.setItem("duckWins", wins);
-  updateWinsCount();
-}
-
-function updateWinsCount() {
-  if (winsCountEl) {
-    winsCountEl.textContent = getWins();
-  }
-}
-
-updateWinsCount();
+    updateWinsCount();
     createStars();
-runTypewriters(document.getElementById("page1"));
-updateBestScore();
-updateLevelUI();
+    runTypewriters(document.getElementById("page1"));
+    updateBestScore();
+    updateLevelUI();
 
-// أول مرة: أنيميشن
-animateDaysTogetherBar();
+    // أول مرة: أنيميشن
+    animateDaysTogetherBar();
 
-// بعدها: تحديث بدون أنيميشن
-setInterval(() => {
-  animateDaysTogetherBar();
-}, 10000); // كل 10 ثواني
+    // بعدها: تحديث بدون أنيميشن
+    setInterval(() => {
+      animateDaysTogetherBar();
+    }, 10000); // كل 10 ثواني
+
 
   </script>
 </body>
