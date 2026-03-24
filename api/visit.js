@@ -17,51 +17,57 @@ export default async function handler(req, res) {
     const region = req.headers["x-vercel-ip-country-region"] || "Unknown";
     const city = req.headers["x-vercel-ip-city"] || "Unknown";
     const timezone = req.headers["x-vercel-ip-timezone"] || "Unknown";
-
     const ua = req.headers["user-agent"] || "";
+
     const parsed = parseUserAgent(ua);
 
-    const content = [
-          " **-------------------------------------------------------**",
-      "📥 **New Visit**",
-      `⏰ **Client Time:** ${clientTime}`,
-      `🖥 **Server Time:** ${serverTime}`,
-      `📄 **Page:** ${page}`,
-      `🌍 **Country:** ${country}`,
-      `🏙 **City:** ${city}`,
-      `🗺 **Region:** ${region}`,
-      `🕓 **Timezone:** ${timezone}`,
-      `🌐 **Browser:** ${parsed.browser}`,
-      `💻 **OS:** ${parsed.os}`,
-      `📱 **Device:** ${parsed.deviceType}`,
-      `🧾 **UA:** ${ua || "Unknown"}`
+    const message = [
+      "--------------------------",
+      "📥 New Visit",
+      `📄 Page: ${page}`,
+      `⏰ Client Time: ${clientTime}`,
+      `🖥 Server Time: ${serverTime}`,
+      `🌍 Country: ${country}`,
+      `🏙 City: ${city}`,
+      `🗺 Region: ${region}`,
+      `🕓 Timezone: ${timezone}`,
+      `🌐 Browser: ${parsed.browser}`,
+      `💻 OS: ${parsed.os}`,
+      `📱 Device: ${parsed.deviceType}`
     ].join("\n");
 
-    const webhook = process.env.DISCORD_WEBHOOK_URL;
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    if (!webhook) {
+    if (!botToken || !chatId) {
       return res.status(500).json({
         ok: false,
-        message: "Missing DISCORD_WEBHOOK_URL env var"
+        message: "Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID"
       });
     }
 
-    const discordRes = await fetch(webhook, {
+    const telegramRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content })
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message
+      })
     });
 
-    if (!discordRes.ok) {
-      const text = await discordRes.text();
+    const telegramData = await telegramRes.json();
+
+    if (!telegramRes.ok || !telegramData.ok) {
       return res.status(500).json({
         ok: false,
-        message: "Discord webhook failed",
-        details: text
+        message: "Telegram send failed",
+        details: telegramData
       });
     }
 
-    return res.status(200).json({ ok: true, message: "Visit sent to Discord" });
+    return res.status(200).json({ ok: true });
   } catch (error) {
     return res.status(500).json({
       ok: false,
