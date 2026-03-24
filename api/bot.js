@@ -28,17 +28,21 @@ export default async function handler(req, res) {
         ? JSON.parse(req.body || "{}")
         : (req.body || {});
 
-    const message = body.message;
+    console.log("Telegram update:", JSON.stringify(body, null, 2));
 
+    const message = body.message || body.edited_message;
     if (!message) {
       return res.status(200).json({
         ok: true,
-        message: "No message received"
+        message: "No message object in update"
       });
     }
 
     const chatId = message.chat?.id;
-    const text = message.text || "";
+    const text = (message.text || "").trim();
+
+    console.log("chatId:", chatId);
+    console.log("text:", text);
 
     if (!chatId) {
       return res.status(200).json({
@@ -47,34 +51,35 @@ export default async function handler(req, res) {
       });
     }
 
-    if (text === "/start") {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: "👋 البوت شغال"
-        })
-      });
+    let replyText = "";
+
+    if (text.startsWith("/start")) {
+      replyText = "👋 البوت شغال";
+    } else if (text.startsWith("/clear")) {
+      replyText = "🧹 تم تنظيف السجل";
+    } else if (text.startsWith("/help")) {
+      replyText = "الأوامر المتاحة:\n/start\n/clear\n/help";
+    } else {
+      replyText = `وصلني هذا الأمر: ${text || "بدون نص"}`;
     }
 
-    if (text === "/clear") {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: "🧹 تم تنظيف السجل"
-        })
-      });
-    }
+    const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: replyText
+      })
+    });
+
+    const tgData = await tgRes.json();
+    console.log("sendMessage response:", tgData);
 
     return res.status(200).json({ ok: true });
   } catch (err) {
+    console.error("BOT ERROR:", err);
     return res.status(500).json({
       ok: false,
       error: err.message
